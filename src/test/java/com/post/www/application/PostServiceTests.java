@@ -52,7 +52,7 @@ class PostServiceTests {
     }
 
     @Test
-    public void addRestaurant() {
+    public void addPost() {
         given(postRepository.save(any())).will(invocation -> {
             Post post = invocation.getArgument(0);
             post.setIdx(3L);
