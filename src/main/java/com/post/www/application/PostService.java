@@ -16,7 +16,7 @@ public class PostService {
     private PostRepository postRepository;
 
     @Autowired
-    public PostService(PostRepository postRepository){
+    public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
 
@@ -33,5 +33,17 @@ public class PostService {
 
     public Post addPost(Post post) {
         return postRepository.save(post);
+    }
+
+    @Transactional
+    public Post updatePost(Long idx, Long user_idx, String title, String contents, String publisdate) {
+        Post post = postRepository.findById(idx).orElse(null);
+        if(post != null){
+            if(user_idx != null) post.setUser_idx(user_idx);
+            if(title != null && !title.isEmpty()) post.setTitle(title);
+            if(contents != null && !contents.isEmpty()) post.setContents(contents);
+            if(publisdate != null) post.setPublishdate(publisdate);
+        }
+        return post;
     }
 }

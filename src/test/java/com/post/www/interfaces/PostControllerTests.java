@@ -17,8 +17,7 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PostController.class)
@@ -106,5 +105,26 @@ public class PostControllerTests {
 
         verify(postService).addPost(any());
 
+    }
+
+    @Test
+    public void createWithInvalidData() throws Exception {
+        mvc.perform(post("/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"user_idx\":1,\"title\":\"\",\"contents\":\"\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+
+    @Test
+    public void update() throws Exception {
+        mvc.perform(patch("/posts/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"user_idx\":1,\"title\":\"JOKER Bar\"," +
+                        "\"contents\":\"Busan\",\"publishdate\":\"\"}"))
+                .andExpect(status().isOk());
+
+        verify(postService)
+                .updatePost(1L, 1L, "JOKER Bar", "Busan","");
     }
 }

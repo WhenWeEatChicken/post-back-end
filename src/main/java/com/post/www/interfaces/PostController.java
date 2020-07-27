@@ -20,20 +20,21 @@ public class PostController {
 
 
     @GetMapping("/posts")
-    public List<Post> list(){
+    public List<Post> list() {
         List<Post> posts = postService.getPosts();
         return posts;
     }
 
     @GetMapping("/posts/{idx}")
-    public Post detail(@PathVariable("idx") Long idx){
+    public Post detail(@PathVariable("idx") Long idx) {
         Post post = postService.getPost(idx);
         return post;
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<?> create(@Valid @RequestBody Post resource)
-            throws URISyntaxException {
+    public ResponseEntity<?> create(
+            @Valid @RequestBody Post resource
+    ) throws URISyntaxException {
         Post post = postService.addPost(
                 Post.builder()
                         .user_idx(resource.getUser_idx())
@@ -45,6 +46,20 @@ public class PostController {
 
         URI location = new URI("/posts/" + post.getIdx());
         return ResponseEntity.created(location).body("{}");
+    }
+
+    @PatchMapping("/posts/{idx}")
+    public String update(
+            @PathVariable("idx") Long idx,
+            @RequestBody Post resource
+    ) {
+        Long user_idx = resource.getUser_idx();
+        String title = resource.getTitle();
+        String contents = resource.getContents();
+        String publisdate = resource.getPublishdate();
+
+        postService.updatePost(idx, user_idx, title, contents, publisdate);
+        return "{}";
     }
 
 }
