@@ -1,17 +1,15 @@
 package com.post.www.domain;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
-    List<Post> findAll();
+public interface PostRepository extends JpaRepository<Post, Long> {
+    Page<Post> findAll(Pageable pageable);
 
-//    Page<Post> findAllBy();
-
-    Optional<Post> findById(Long idx);
+    Optional<Post> findByIdx(Long idx);
 
     Post save(Post post);
 }

@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,23 +40,24 @@ class PostServiceTests {
         List<Post> posts = new ArrayList<>();
         Post post = Post.builder()
                 .idx(1L)
-                .user_idx(1L)
+                .userIdx(1L)
                 .title("Seoul")
                 .contents("Bob zip")
                 .build();
         posts.add(post);
+        Page<Post> page = new PageImpl(posts);
+        given(postRepository.findAll(PageRequest.of(0,3))).willReturn(page);
 
-        given(postRepository.findAll()).willReturn(posts);
-
-        given(postRepository.findById(1L))
+        given(postRepository.findByIdx(1L))
                 .willReturn(Optional.of(post));
     }
 
     @Test
     public void getPosts(){
-        List<Post> posts = postService.getPosts();
+        Page<Post> posts = postService.getPosts(PageRequest.of(0,3));
 
-        Post post = posts.get(0);
+        List<Post> list = posts.getContent();
+        Post post = list.get(0);
         assertThat(post.getIdx()).isEqualTo(1L);
     }
 
@@ -98,7 +102,7 @@ class PostServiceTests {
                 .publishdate("")
                 .build();
 
-        given(postRepository.findById(1L))
+        given(postRepository.findByIdx(1L))
                 .willReturn(Optional.of(post));
 
         postService.updatePost(1L, 1L, "Sool zip", "Busan","");

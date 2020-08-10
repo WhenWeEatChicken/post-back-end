@@ -5,13 +5,16 @@ import com.post.www.domain.Post;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 @Api(tags = {"1.Post"})
 @CrossOrigin
@@ -23,8 +26,10 @@ public class PostController {
 
     @ApiOperation(value = "전체 게시글 조회", notes = "모든 게시글을 조회합니다.")
     @GetMapping("/posts")
-    public List<Post> list() {
-        List<Post> posts = postService.getPosts();
+    public Page<Post> list(
+            @PageableDefault(sort = "idx", direction = Sort.Direction.DESC, size = 3) Pageable pageable
+    ) {
+        Page<Post> posts = postService.getPosts(pageable);
         return posts;
     }
 
@@ -42,7 +47,7 @@ public class PostController {
     ) throws URISyntaxException {
         Post post = postService.addPost(
                 Post.builder()
-                        .user_idx(resource.getUser_idx())
+                        .userIdx(resource.getUserIdx())
                         .title(resource.getTitle())
                         .contents(resource.getContents())
                         .publishdate(resource.getPublishdate())
@@ -59,7 +64,7 @@ public class PostController {
             @PathVariable("idx") Long idx,
             @RequestBody Post resource
     ) {
-        Long user_idx = resource.getUser_idx();
+        Long user_idx = resource.getUserIdx();
         String title = resource.getTitle();
         String contents = resource.getContents();
         String publisdate = resource.getPublishdate();
