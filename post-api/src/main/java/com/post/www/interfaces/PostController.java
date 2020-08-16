@@ -2,9 +2,11 @@ package com.post.www.interfaces;
 
 import com.post.www.application.PostService;
 import com.post.www.domain.Post;
+import com.post.www.interfaces.dto.PostRequestDto;
+import com.post.www.interfaces.dto.PostResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,43 +18,36 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-@Api(tags = {"1.Post"})
+@Api(tags = {"1.PostController"})
 @CrossOrigin
+@RequiredArgsConstructor
 @RestController
 public class PostController {
 
-    @Autowired
-    private PostService postService;
+    private final PostService postService;
 
     @ApiOperation(value = "전체 게시글 조회", notes = "모든 게시글을 조회합니다.")
     @GetMapping("/posts")
-    public Page<Post> list(
+    public Page<PostResponseDto> list(
             @PageableDefault(sort = "idx", direction = Sort.Direction.DESC, size = 3) Pageable pageable
     ) {
-        Page<Post> posts = postService.getPosts(pageable);
+        Page<PostResponseDto> posts = postService.getPosts(pageable);
         return posts;
     }
 
     @ApiOperation(value = "게시글 상세 조회", notes = "해당 게시글의 모든 정보를 조회합니다.")
     @GetMapping("/posts/{idx}")
-    public Post detail(@PathVariable("idx") Long idx) {
-        Post post = postService.getPost(idx);
-        return post;
+    public PostResponseDto detail(@PathVariable("idx") Long idx) {
+        PostResponseDto responseDto = postService.getPost(idx);
+        return responseDto;
     }
 
     @ApiOperation(value = "게시글 등록", notes = "새로운 게시글을 등록합니다.")
     @PostMapping("/posts")
     public ResponseEntity<?> create(
-            @Valid @RequestBody Post resource
+            @Valid @RequestBody PostRequestDto resource
     ) throws URISyntaxException {
-        Post post = postService.addPost(
-                Post.builder()
-                        .userIdx(resource.getUserIdx())
-                        .title(resource.getTitle())
-                        .contents(resource.getContents())
-                        .publishdate(resource.getPublishdate())
-                        .build()
-        );
+        Post post = postService.addPost(resource);
 
         URI location = new URI("/posts/" + post.getIdx());
         return ResponseEntity.created(location).body("{}");
@@ -62,14 +57,10 @@ public class PostController {
     @PatchMapping("/posts/{idx}")
     public String update(
             @PathVariable("idx") Long idx,
-            @RequestBody Post resource
+            @RequestBody PostRequestDto resource
     ) {
-        Long user_idx = resource.getUserIdx();
-        String title = resource.getTitle();
-        String contents = resource.getContents();
-        String publisdate = resource.getPublishdate();
 
-        postService.updatePost(idx, user_idx, title, contents, publisdate);
+        postService.updatePost(idx, resource);
         return "{}";
     }
 

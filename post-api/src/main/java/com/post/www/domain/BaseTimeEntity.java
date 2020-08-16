@@ -13,16 +13,16 @@ import java.time.LocalDateTime;
 public abstract class BaseTimeEntity {
 
     @CreatedDate
-    private LocalDateTime createdate;
+    private LocalDateTime createDate;
 
     @LastModifiedDate
-    private LocalDateTime updatedate;
+    private LocalDateTime updateDate;
 
     public LocalDateTime getCreatedDate() {
-        return createdate;
+        return createDate;
     }
 
     public LocalDateTime getModifiedDate() {
-        return updatedate;
+        return updateDate;
     }
 }

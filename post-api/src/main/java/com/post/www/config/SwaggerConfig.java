@@ -1,4 +1,4 @@
-package com.post.www;
+package com.post.www.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

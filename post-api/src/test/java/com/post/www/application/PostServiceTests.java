@@ -3,6 +3,8 @@ package com.post.www.application;
 import com.post.www.domain.Post;
 import com.post.www.domain.PostNotFoundException;
 import com.post.www.domain.PostRepository;
+import com.post.www.interfaces.dto.PostRequestDto;
+import com.post.www.interfaces.dto.PostResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,18 +57,18 @@ class PostServiceTests {
 
     @Test
     public void getPosts(){
-        Page<Post> posts = postService.getPosts(PageRequest.of(0,3));
+        Page<PostResponseDto> posts = postService.getPosts(PageRequest.of(0,3));
 
-        List<Post> list = posts.getContent();
-        Post post = list.get(0);
-        assertThat(post.getIdx()).isEqualTo(1L);
+        List<PostResponseDto> list = posts.getContent();
+        PostResponseDto responseDto = list.get(0);
+        assertThat(responseDto.getIdx()).isEqualTo(1L);
     }
 
     @Test
     public void getPost() {
-        Post post = postService.getPost(1L);
+        PostResponseDto responseDto = postService.getPost(1L);
 
-        assertThat(post.getIdx()).isEqualTo(1L);
+        assertThat(responseDto.getIdx()).isEqualTo(1L);
     }
 
     @Test
@@ -79,18 +82,16 @@ class PostServiceTests {
     public void addPost() {
         given(postRepository.save(any())).will(invocation -> {
             Post post = invocation.getArgument(0);
-            post.setIdx(3L);
             return post;
         });
 
-        Post post = Post.builder()
+        PostRequestDto postRequestDto = PostRequestDto.builder()
                 .title("BeRyong")
                 .contents("Busan")
-                .publishdate("")
+                .publishDate("2011-11-11")
                 .build();
-
-        Post created = postService.addPost(post);
-        assertThat(created.getIdx()).isEqualTo(3L);
+        Post created = postService.addPost(postRequestDto);
+        assertThat(created.getTitle()).isEqualTo("BeRyong");
     }
 
     @Test
@@ -99,15 +100,20 @@ class PostServiceTests {
                 .idx(1L)
                 .title("Bob zip")
                 .contents("Seoul")
-                .publishdate("")
+                .publishDate(LocalDateTime.now())
                 .build();
 
         given(postRepository.findByIdx(1L))
                 .willReturn(Optional.of(post));
+        PostRequestDto postRequestDto = PostRequestDto.builder()
+                .title("BeRyong")
+                .contents("Busan")
+                .publishDate("2011-11-11")
+                .build();
 
-        postService.updatePost(1L, 1L, "Sool zip", "Busan","");
+        postService.updatePost(1L, postRequestDto);
 
-        assertThat(post.getTitle()).isEqualTo("Sool zip");
+        assertThat(post.getTitle()).isEqualTo("BeRyong");
         assertThat(post.getContents()).isEqualTo("Busan");
     }
 }
