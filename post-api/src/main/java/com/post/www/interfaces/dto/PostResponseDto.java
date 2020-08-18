@@ -1,7 +1,6 @@
 package com.post.www.interfaces.dto;
 
 import com.post.www.domain.Post;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +16,8 @@ public class PostResponseDto {
     private String contents;
     private String title;
     private LocalDateTime publishDate;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 
     @Builder
     public PostResponseDto(Post entity) {
@@ -25,5 +26,7 @@ public class PostResponseDto {
         this.contents = entity.getContents();
         this.title = entity.getTitle();
         this.publishDate = entity.getPublishDate();
+        this.createDate = entity.getCreatedDate();
+        this.updateDate = entity.getModifiedDate();
     }
 }

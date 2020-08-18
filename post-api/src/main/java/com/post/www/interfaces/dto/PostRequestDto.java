@@ -27,7 +27,7 @@ public class PostRequestDto {
     private String publishDate;
 
     @Builder
-    public PostRequestDto(Long userIdx, String contents, String title, String publishDate) {
+    public PostRequestDto(@NotNull Long userIdx, @NotEmpty String contents, @NotEmpty String title, @NotEmpty String publishDate) {
         this.userIdx = userIdx;
         this.contents = contents;
         this.title = title;
