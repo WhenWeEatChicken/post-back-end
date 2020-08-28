@@ -1,7 +1,6 @@
 package com.post.www.application;
 
 import com.post.www.domain.Post;
-import com.post.www.domain.PostNotFoundException;
 import com.post.www.domain.PostRepository;
 import com.post.www.interfaces.dto.PostRequestDto;
 import com.post.www.interfaces.dto.PostResponseDto;

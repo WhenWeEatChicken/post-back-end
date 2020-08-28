@@ -2,7 +2,7 @@ package com.post.www.interfaces;
 
 import com.post.www.application.PostService;
 import com.post.www.domain.Post;
-import com.post.www.domain.PostNotFoundException;
+import com.post.www.application.PostNotFoundException;
 import com.post.www.interfaces.dto.PostResponseDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

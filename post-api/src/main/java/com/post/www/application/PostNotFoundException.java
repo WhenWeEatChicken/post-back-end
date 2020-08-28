@@ -1,4 +1,4 @@
-package com.post.www.domain;
+package com.post.www.application;
 
 public class PostNotFoundException extends RuntimeException {
 

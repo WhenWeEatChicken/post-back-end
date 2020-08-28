@@ -1,16 +1,22 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://database-1.cffkzrmsg6dh.ap-northeast-2.rds.amazonaws.com:3306/test
-#    url: jdbc:mysql://localhost:3306/test
+    #    url: jdbc:mysql://database-1.cffkzrmsg6dh.ap-northeast-2.rds.amazonaws.com:3306/test
+    # local 테스트용
+    url: jdbc:mysql://localhost:3306/test
     username: root
-    password: ehgns5545
-  #    password: ehgns5545@
+    #    password: ehgns5545
+    # local 테스트용
+    password: ehgns5545@
   jpa:
     properties:
       hibernate:
         show_sql: true
         format_sql: true
+  freemarker:
+    template-loader-path: classpath:/templates/
+    cache: false
+    suffix: .ftl
 logging:
   level:
     org:
@@ -18,3 +24,6 @@ logging:
         type:
           descriptor:
             sql: trace
+
+jwt:
+  secret: 12345678901234567890123456789012

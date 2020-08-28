@@ -19,7 +19,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public User addUser(UserAddRequestDto requestDto){
+    public User addUser(UserAddRequestDto requestDto) {
         Optional<User> existed = userRepostory.findByEmail(requestDto.getEmail());
         if (existed.isPresent()) {
             throw new EmailExistedException(requestDto.getEmail());
@@ -36,5 +36,15 @@ public class UserService {
                 .build();
 
         return userRepostory.save(user);
+    }
+
+    public User authenticate(String email, String password) {
+        User user = userRepostory.findByEmail(email).orElseThrow(() ->
+                new EmailNotExistedException(email));
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new PasswordWrongException();
+        }
+        return user;
     }
 }

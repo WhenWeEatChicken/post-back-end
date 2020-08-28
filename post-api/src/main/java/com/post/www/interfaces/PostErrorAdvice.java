@@ -1,6 +1,6 @@
 package com.post.www.interfaces;
 
-import com.post.www.domain.PostNotFoundException;
+import com.post.www.application.PostNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
