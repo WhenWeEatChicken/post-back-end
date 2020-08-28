@@ -30,6 +30,7 @@ class UserControllerTests {
         User mockUser = User.builder()
                 .idx(3L)
                 .nickname("dlh1106")
+                .name("도훈")
                 .email("dlh1106@naver.com")
                 .password("password")
                 .build();
@@ -39,7 +40,7 @@ class UserControllerTests {
 
         mvc.perform(post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"nickname\":\"dlh1106\",\"email\":\"dlh1106@naver.com\",\"password\":\"password\"}")
+                .content("{\"nickname\":\"dlh1106\",\"name\":\"도훈\",\"email\":\"dlh1106@naver.com\",\"password\":\"password\"}")
         )
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/user/3"))
