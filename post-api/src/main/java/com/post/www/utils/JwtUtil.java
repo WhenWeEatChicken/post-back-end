@@ -1,6 +1,7 @@
 package com.post.www.utils;
 
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,5 +24,12 @@ public class JwtUtil {
         return builder
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public Claims getClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(key)
+                .parseClaimsJws(token) //jws 란 sign이 포함된 jwt 의미
+                .getBody();
     }
 }

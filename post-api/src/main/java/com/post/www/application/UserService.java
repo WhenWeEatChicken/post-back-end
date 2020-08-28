@@ -28,6 +28,7 @@ public class UserService {
         String encodePassword = passwordEncoder.encode(requestDto.getPassword());
         User user = User.builder()
                 .nickname(requestDto.getNickname())
+                .name(requestDto.getName())
                 .password(encodePassword)
                 .email(requestDto.getEmail())
                 .photo(requestDto.getPhoto())

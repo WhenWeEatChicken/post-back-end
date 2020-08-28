@@ -15,7 +15,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -40,6 +39,7 @@ class UserServiceTests {
     void addUser() {
         UserAddRequestDto requestDto = UserAddRequestDto.builder()
                 .nickname("dlh1106")
+                .name("도훈")
                 .password("pass")
                 .email("dlh1106@naver.com")
                 .photo("")
@@ -55,6 +55,7 @@ class UserServiceTests {
     public void addUserWithExistedEmail() {
         UserAddRequestDto requestDto = UserAddRequestDto.builder()
                 .nickname("dlh1106")
+                .name("도훈")
                 .password("pass")
                 .email("dlh1106@naver.com")
                 .photo("")

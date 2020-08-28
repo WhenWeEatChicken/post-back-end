@@ -26,6 +26,9 @@ public class User extends BaseTimeEntity{
     private String nickname;
 
     @NotEmpty
+    private String name;
+
+    @NotEmpty
     private String email;
 
     @NotEmpty

@@ -15,6 +15,9 @@ public class UserAddRequestDto {
     private String nickname;
 
     @NotEmpty
+    private String name;
+
+    @NotEmpty
     private String email;
 
     @NotEmpty
@@ -27,8 +30,9 @@ public class UserAddRequestDto {
     private String contents;
 
     @Builder
-    public UserAddRequestDto(@NotEmpty String nickname, @NotEmpty String email, @NotEmpty String password, String photo, String comments, String contents) {
+    public UserAddRequestDto(@NotEmpty String nickname, @NotEmpty String name, @NotEmpty String email, @NotEmpty String password, String photo, String comments, String contents) {
         this.nickname = nickname;
+        this.name = name;
         this.email = email;
         this.password = password;
         this.photo = photo;
