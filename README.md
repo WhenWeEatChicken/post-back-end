@@ -4,7 +4,7 @@
 
 # API 문서 링크 
 
-http://52.231.101.140/:8080/swagger-ui.html#/
+http://52.231.101.140:8080/swagger-ui.html#/
 
 
 
