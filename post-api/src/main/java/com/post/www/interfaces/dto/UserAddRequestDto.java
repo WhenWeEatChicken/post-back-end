@@ -1,6 +1,5 @@
 package com.post.www.interfaces.dto;
 
-import com.post.www.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
