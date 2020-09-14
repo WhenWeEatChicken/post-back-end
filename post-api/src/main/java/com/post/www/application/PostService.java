@@ -1,5 +1,6 @@
 package com.post.www.application;
 
+import com.post.www.config.enums.PostType;
 import com.post.www.domain.Post;
 import com.post.www.domain.PostRepository;
 import com.post.www.interfaces.dto.PostRequestDto;
@@ -26,7 +27,7 @@ public class PostService {
 
     public Page<PostResponseDto> getPosts(Pageable pageable) {
         Page<Post> posts = postRepository.findAll(pageable);
-        List list = posts.stream().map(post -> new PostResponseDto(post)).collect(Collectors.toList());
+        List list = posts.stream().map(PostResponseDto::new).collect(Collectors.toList());
         Page<PostResponseDto> responseDtos = new PageImpl<PostResponseDto>(list);
         return responseDtos;
     }
@@ -38,8 +39,15 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
-    public Post addPost(PostRequestDto requestDto) {
-        return postRepository.save(requestDto.toEntity());
+    public Post addPost(Long userIdx, String title, String contents, String publishDate, PostType type) {
+        Post post = Post.builder()
+                .userIdx(userIdx)
+                .type(type)
+                .title(title)
+                .contents(contents)
+                .publishDate(LocalDateTime.parse(publishDate+" 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .build();
+        return postRepository.save(post);
     }
 
     @Transactional
@@ -47,12 +55,11 @@ public class PostService {
         Post post = postRepository.findByIdx(idx)
                 .orElseThrow(() -> new PostNotFoundException(idx));
         if (post != null) {
-            Long user_idx = requestDto.getUserIdx();
             String title = requestDto.getTitle();
             String contents = requestDto.getContents();
             String publishDate = requestDto.getPublishDate();
 
-            post.updatePost(user_idx, title, contents, LocalDateTime.parse(publishDate+" 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            post.updatePost(title, contents, LocalDateTime.parse(publishDate + " 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         }
         return post;
     }

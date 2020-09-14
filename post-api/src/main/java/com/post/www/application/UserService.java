@@ -3,6 +3,7 @@ package com.post.www.application;
 import com.post.www.domain.User;
 import com.post.www.domain.UserRepository;
 import com.post.www.interfaces.dto.UserAddRequestDto;
+import com.post.www.interfaces.dto.UserDetailResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class UserService {
 
         String encodePassword = passwordEncoder.encode(requestDto.getPassword());
         User user = User.builder()
+                .type(requestDto.getType())
                 .nickname(requestDto.getNickname())
                 .name(requestDto.getName())
                 .password(encodePassword)
@@ -47,5 +49,11 @@ public class UserService {
             throw new PasswordWrongException();
         }
         return user;
+    }
+
+    public UserDetailResponseDto getUser(Long userIdx){
+        User user = userRepostory.findByIdx(userIdx).orElseThrow(() ->
+                new UserNotExistedException(userIdx));
+        return new UserDetailResponseDto(user);
     }
 }

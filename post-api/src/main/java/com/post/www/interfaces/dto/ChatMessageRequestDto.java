@@ -1,5 +1,6 @@
 package com.post.www.interfaces.dto;
 
+import com.post.www.config.enums.MessageType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,13 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatMessageDto {
-    //메시지 타입 : 입장 채팅 퇴장
-    public enum MessageType{
-        ENTER, TALK, OUT
-    }
+public class ChatMessageRequestDto {
 
-    private  MessageType type;
+    private MessageType type;
     private String roomId;
     private String sender;
     private String message;

@@ -1,34 +1,15 @@
 package com.post.www.domain;
 
-import com.post.www.interfaces.dto.ChatRoomDto;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
-@Repository
-public class ChatRoomRepository {
-    private Map<String, ChatRoomDto> chatRoomMap;
+public interface ChatRoomRepository extends JpaRepository<ChatRoom , Long> {
+    List<ChatRoom> findAll();
 
-    @PostConstruct
-    private void init() {
-        chatRoomMap = new LinkedHashMap<>();
-    }
+    Optional<ChatRoom> findByRoomId(String roomId);
 
-    public List<ChatRoomDto> findAllRoom() {
-        // 채팅방 생성순서 최근 순으로 반환
-        List chatRooms = new ArrayList<>(chatRoomMap.values());
-        Collections.reverse(chatRooms);
-        return chatRooms;
-    }
-
-    public ChatRoomDto findRoomById(String id) {
-        return chatRoomMap.get(id);
-    }
-
-    public ChatRoomDto createChatRoom(String name) {
-        ChatRoomDto chatRoom = ChatRoomDto.create(name);
-        chatRoomMap.put(chatRoom.getRoomId(), chatRoom);
-        return chatRoom;
-    }
+    @Override
+    ChatRoom save(ChatRoom chatRoom);
 }

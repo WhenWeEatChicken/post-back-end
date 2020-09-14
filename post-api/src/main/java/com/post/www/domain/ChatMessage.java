@@ -1,6 +1,6 @@
 package com.post.www.domain;
 
-import com.post.www.config.enums.UserType;
+import com.post.www.config.enums.MessageType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,38 +11,33 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Getter
 @Entity
-public class User extends BaseTimeEntity{
+public class ChatMessage extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @NotEmpty
-    private UserType type;
+    private MessageType type;
+
+    @NotNull
+    private Long send_idx;
+
+    @NotNull
+    private Long rev_idx;
+
+    @NotNull
+    private Long room_idx;
 
     @NotEmpty
-    private String nickname;
+    private String message;
 
-    @NotEmpty
-    private String name;
 
-    @NotEmpty
-    private String email;
-
-    @NotEmpty
-    private String password;
-
-    private String photo;
-
-    private String comments;
-
-    private String contents;
 
 }
-

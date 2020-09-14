@@ -1,5 +1,6 @@
 package com.post.www.application;
 
+import com.post.www.config.enums.UserType;
 import com.post.www.domain.User;
 import com.post.www.domain.UserRepository;
 import com.post.www.interfaces.dto.UserAddRequestDto;
@@ -39,6 +40,7 @@ class UserServiceTests {
     void addUser() {
         UserAddRequestDto requestDto = UserAddRequestDto.builder()
                 .nickname("dlh1106")
+                .type(UserType.CUSTORMER)
                 .name("도훈")
                 .password("pass")
                 .email("dlh1106@naver.com")
@@ -55,6 +57,7 @@ class UserServiceTests {
     public void addUserWithExistedEmail() {
         UserAddRequestDto requestDto = UserAddRequestDto.builder()
                 .nickname("dlh1106")
+                .type(UserType.CUSTORMER)
                 .name("도훈")
                 .password("pass")
                 .email("dlh1106@naver.com")

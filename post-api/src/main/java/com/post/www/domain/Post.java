@@ -1,6 +1,7 @@
 package com.post.www.domain;
 
 
+import com.post.www.config.enums.PostType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +24,9 @@ public class Post extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
+    @NotEmpty
+    private PostType type;
+
     @NotNull
     @Column(name = "user_idx")
     private Long userIdx;
@@ -39,8 +43,7 @@ public class Post extends BaseTimeEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     private List<Comment> comments;
 
-    public void updatePost(@NotNull Long userIdx, @NotEmpty String title, @NotEmpty String contents, @NotNull LocalDateTime publishDate) {
-        this.userIdx = userIdx;
+    public void updatePost(@NotEmpty String title, @NotEmpty String contents, @NotNull LocalDateTime publishDate) {
         this.title = title;
         this.contents = contents;
         this.publishDate = publishDate;

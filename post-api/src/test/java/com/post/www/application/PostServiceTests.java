@@ -1,5 +1,6 @@
 package com.post.www.application;
 
+import com.post.www.config.enums.PostType;
 import com.post.www.domain.Post;
 import com.post.www.domain.PostRepository;
 import com.post.www.interfaces.dto.PostRequestDto;
@@ -48,15 +49,15 @@ class PostServiceTests {
                 .build();
         posts.add(post);
         Page<Post> page = new PageImpl(posts);
-        given(postRepository.findAll(PageRequest.of(0,3))).willReturn(page);
+        given(postRepository.findAll(PageRequest.of(0, 3))).willReturn(page);
 
         given(postRepository.findByIdx(1L))
                 .willReturn(Optional.of(post));
     }
 
     @Test
-    public void getPosts(){
-        Page<PostResponseDto> posts = postService.getPosts(PageRequest.of(0,3));
+    public void getPosts() {
+        Page<PostResponseDto> posts = postService.getPosts(PageRequest.of(0, 3));
 
         List<PostResponseDto> list = posts.getContent();
         PostResponseDto responseDto = list.get(0);
@@ -84,12 +85,12 @@ class PostServiceTests {
             return post;
         });
 
-        PostRequestDto postRequestDto = PostRequestDto.builder()
-                .title("BeRyong")
-                .contents("Busan")
-                .publishDate("2011-11-11")
-                .build();
-        Post created = postService.addPost(postRequestDto);
+        Long userIdx = 1L;
+        String title = "BeRyong";
+        String contents = "Busan";
+        String publishDate = "2011-11-11";
+        PostType type = PostType.NOTICE;
+        Post created = postService.addPost(userIdx, title, contents, publishDate, type);
         assertThat(created.getTitle()).isEqualTo("BeRyong");
     }
 

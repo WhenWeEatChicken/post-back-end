@@ -22,6 +22,7 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -93,18 +94,21 @@ public class PostControllerTests {
 
     @Test
     public void create() throws Exception {
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2huIn0.8hm6ZOJykSINHxL-rf0yV882fApL3hyQ9-WGlJUyo2A";
+
         LocalDateTime currenttime = LocalDateTime.now();
-        given(postService.addPost(any())).willReturn(
+        given(postService.addPost(any(), any(), any(), any(), any())).willReturn(
                 Post.builder()
-                .idx(3L)
-                .userIdx(1L)
-                .title("JOKER")
-                .contents("Seoul")
-                .publishDate(currenttime)
-                .build()
+                        .idx(3L)
+                        .userIdx(1L)
+                        .title("JOKER")
+                        .contents("Seoul")
+                        .publishDate(currenttime)
+                        .build()
         );
 
         mvc.perform(post("/posts")
+                .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"userIdx\":1,\"title\":\"JOKER\",\"contents\":\"Seoul\"" +
                         ",\"publishDate\":\"2011-11-11\"}")
@@ -113,7 +117,7 @@ public class PostControllerTests {
                 .andExpect(header().string("location", "/posts/3"))
                 .andExpect(content().string("{}"));
 
-        verify(postService).addPost(any());
+        verify(postService).addPost(any(),any(), any(), any(), any());
 
     }
 
@@ -123,6 +127,9 @@ public class PostControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"userIdx\":1,\"title\":\"\",\"contents\":\"\"}"))
                 .andExpect(status().isBadRequest());
+
+        verify(postService, never()).addPost(any(),any(), any(), any(), any());
+
     }
 
 
