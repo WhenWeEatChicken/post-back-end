@@ -1,6 +1,7 @@
 package com.post.www.interfaces;
 
 import com.post.www.application.PostService;
+import com.post.www.config.enums.PostType;
 import com.post.www.domain.Post;
 import com.post.www.application.PostNotFoundException;
 import com.post.www.interfaces.dto.PostResponseDto;
@@ -100,6 +101,7 @@ public class PostControllerTests {
         given(postService.addPost(any(), any(), any(), any(), any())).willReturn(
                 Post.builder()
                         .idx(3L)
+                        .type(PostType.NOTICE)
                         .userIdx(1L)
                         .title("JOKER")
                         .contents("Seoul")
@@ -110,7 +112,7 @@ public class PostControllerTests {
         mvc.perform(post("/posts")
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"userIdx\":1,\"title\":\"JOKER\",\"contents\":\"Seoul\"" +
+                .content("{\"type\":\"NOTICE\",\"userIdx\":1,\"title\":\"JOKER\",\"contents\":\"Seoul\"" +
                         ",\"publishDate\":\"2011-11-11\"}")
         )
                 .andExpect(status().isCreated())

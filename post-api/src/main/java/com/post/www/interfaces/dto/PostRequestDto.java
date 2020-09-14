@@ -1,21 +1,18 @@
 package com.post.www.interfaces.dto;
 
 import com.post.www.config.enums.PostType;
-import com.post.www.domain.Post;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Getter
 @NoArgsConstructor
 public class PostRequestDto {
 
-    @NotEmpty
+    @NotNull
     private PostType type;
 
     @NotEmpty

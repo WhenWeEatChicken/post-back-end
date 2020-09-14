@@ -24,7 +24,7 @@ public class Post extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @NotEmpty
+    @NotNull
     private PostType type;
 
     @NotNull

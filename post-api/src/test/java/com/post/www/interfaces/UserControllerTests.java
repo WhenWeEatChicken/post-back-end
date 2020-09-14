@@ -1,6 +1,7 @@
 package com.post.www.interfaces;
 
 import com.post.www.application.UserService;
+import com.post.www.config.enums.UserType;
 import com.post.www.domain.User;
 import com.post.www.interfaces.dto.UserDetailResponseDto;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,6 +32,7 @@ class UserControllerTests {
     public void create() throws Exception {
         User mockUser = User.builder()
                 .idx(3L)
+                .type(UserType.CUSTORMER)
                 .nickname("dlh1106")
                 .name("도훈")
                 .email("dlh1106@naver.com")
@@ -43,7 +44,7 @@ class UserControllerTests {
 
         mvc.perform(post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"nickname\":\"dlh1106\",\"name\":\"도훈\",\"email\":\"dlh1106@naver.com\",\"password\":\"password\"}")
+                .content("{\"type\":\"CUSTORMER\",\"nickname\":\"dlh1106\",\"name\":\"도훈\",\"email\":\"dlh1106@naver.com\",\"password\":\"password\"}")
         )
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/user/3"))
@@ -54,17 +55,18 @@ class UserControllerTests {
 
     @Test
     void detail() throws Exception {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjMsIm5hbWUiOiJkbGgxMTA2IiwiaWF0IjoxNTk5NzYzNzA4LCJleHAiOjE1OTk3NzA5MDh9.FOGcW68hfO98X1GGmZkNsTalagksBdlaY_2-DhSOjBk";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjUsIm5hbWUiOiJzdHJpbmciLCJpYXQiOjE2MDAwOTQ2MjQsImV4cCI6MTYwMDEwMTgyNH0.r4IYpVpf0SCsNydkdrqsVXYZB3J2X1VzyeiBPUaF0Wc";
         UserDetailResponseDto responseDto = new UserDetailResponseDto(
                 User.builder()
-                        .idx(3L)
+                        .idx(5L)
+                        .type(UserType.CUSTORMER)
                         .name("john")
                         .nickname("john")
                         .email("test@test.com")
                         .password("1234")
                         .build()
         );
-        given(userService.getUser(3L)).willReturn(responseDto);
+        given(userService.getUser(5L)).willReturn(responseDto);
 
         mvc.perform(get("/user")
                 .header("Authorization", "Bearer " + token)

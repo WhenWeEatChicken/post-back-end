@@ -24,6 +24,7 @@ public class ChatMessage extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
+    @NotNull
     private MessageType type;
 
     @NotNull
