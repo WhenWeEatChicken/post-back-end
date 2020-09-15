@@ -14,23 +14,15 @@ import java.util.List;
 
 @Api(tags = {"6.ChatRoomController"})
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/chat")
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
 
-    // 채팅 리스트 화면
-    @ApiOperation(value = "방 리스트", notes = "생성된 채팅방을 조회합니다. (뷰연동)")
-    @GetMapping("/room")
-    public String rooms(Model model) {
-        return "/chat/room";
-    }
-
     // 모든 채팅방 목록 반환
     @ApiOperation(value = "방 리스트", notes = "생성된 채팅방을 조회합니다.")
     @GetMapping("/rooms")
-    @ResponseBody
     public List<ChatRoomResponseDto> room() {
         return chatRoomService.getRooms();
     }
@@ -38,23 +30,13 @@ public class ChatRoomController {
     // 채팅방 생성
     @ApiOperation(value = "방 생성", notes = "채팅방을 생성합니다.")
     @PostMapping("/room")
-    @ResponseBody
     public ChatRoom createRoom(@RequestParam String name) {
         return chatRoomService.createChatRoom(name);
-    }
-
-    // 채팅방 입장 화면
-    @ApiOperation(value = "방 상세", notes = "생성된 채팅방에 입장합니다. (뷰 연동)")
-    @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable String roomId) {
-        model.addAttribute("roomId", roomId);
-        return "/chat/roomdetail";
     }
 
     // 특정 채팅방 조회
     @ApiOperation(value = "방 상세", notes = "해당 채팅방을 조회합니다.")
     @GetMapping("/room/{roomId}")
-    @ResponseBody
     public ChatRoomResponseDto roomInfo(@PathVariable String roomId) {
         return chatRoomService.getRoom(roomId);
     }
