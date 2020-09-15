@@ -38,7 +38,7 @@ class CommentServiceTests {
         List<Comment> comments = new ArrayList<>();
         Post post = Post.builder()
                 .idx(1L)
-                .userIdx(1L)
+                .user(any())
                 .title("Seoul")
                 .contents("Bob zip")
                 .build();
@@ -64,7 +64,7 @@ class CommentServiceTests {
         });
         Post post = Post.builder()
                 .idx(1L)
-                .userIdx(1L)
+                .user(any())
                 .title("Seoul")
                 .contents("Bob zip")
                 .build();

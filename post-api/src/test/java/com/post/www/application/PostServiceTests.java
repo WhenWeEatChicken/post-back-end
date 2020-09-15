@@ -43,7 +43,7 @@ class PostServiceTests {
         List<Post> posts = new ArrayList<>();
         Post post = Post.builder()
                 .idx(1L)
-                .userIdx(1L)
+                .user(any())
                 .title("Seoul")
                 .contents("Bob zip")
                 .build();

@@ -28,8 +28,9 @@ public class Post extends BaseTimeEntity {
     private PostType type;
 
     @NotNull
-    @Column(name = "user_idx")
-    private Long userIdx;
+    @ManyToOne
+    @JoinColumn(name = "user_idx" , referencedColumnName = "idx")
+    private User user;
 
     @NotEmpty
     private String contents;

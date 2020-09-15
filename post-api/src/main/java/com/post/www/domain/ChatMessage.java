@@ -6,10 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -28,13 +25,15 @@ public class ChatMessage extends BaseTimeEntity{
     private MessageType type;
 
     @NotNull
-    private Long send_idx;
+    private Long sendIdx;
 
     @NotNull
-    private Long rev_idx;
+    private Long revIdx;
 
     @NotNull
-    private Long room_idx;
+    @ManyToOne
+    @JoinColumn(name = "room_idx", referencedColumnName = "idx")
+    private ChatRoom chatRoom;
 
     @NotEmpty
     private String message;

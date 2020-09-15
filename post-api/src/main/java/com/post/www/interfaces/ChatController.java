@@ -28,7 +28,7 @@ public class ChatController {
         addChatMessage(message);
     }
 
-    public void addChatMessage(ChatMessageRequestDto message){
+    private void addChatMessage(ChatMessageRequestDto message) {
         chatMessageService.addChatMessage(message);
     }
 }

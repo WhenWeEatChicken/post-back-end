@@ -43,7 +43,7 @@ public class PostControllerTests {
         posts.add(new PostResponseDto(
                 Post.builder()
                         .idx(1L)
-                        .userIdx(1L)
+                        .user(any())
                         .title("JOKER")
                         .contents("Seoul")
                         .publishDate(LocalDateTime.now())
@@ -65,7 +65,7 @@ public class PostControllerTests {
         PostResponseDto post = new PostResponseDto(
                 Post.builder()
                         .idx(1L)
-                        .userIdx(1L)
+                        .user(any())
                         .title("JOKER")
                         .contents("Seoul")
                         .publishDate(LocalDateTime.now())
@@ -102,7 +102,7 @@ public class PostControllerTests {
                 Post.builder()
                         .idx(3L)
                         .type(PostType.NOTICE)
-                        .userIdx(1L)
+                        .user(any())
                         .title("JOKER")
                         .contents("Seoul")
                         .publishDate(currenttime)
@@ -142,7 +142,7 @@ public class PostControllerTests {
         given(postService.updatePost(eq(1L), any())).willReturn(
                 Post.builder()
                         .idx(3L)
-                        .userIdx(1L)
+                        .user(any())
                         .title("JOKER")
                         .contents("Seoul")
                         .publishDate(currenttime)

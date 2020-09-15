@@ -3,6 +3,7 @@ package com.post.www.application;
 import com.post.www.config.enums.PostType;
 import com.post.www.domain.Post;
 import com.post.www.domain.PostRepository;
+import com.post.www.domain.User;
 import com.post.www.interfaces.dto.PostRequestDto;
 import com.post.www.interfaces.dto.PostResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class PostService {
 
     public Post addPost(Long userIdx, String title, String contents, String publishDate, PostType type) {
         Post post = Post.builder()
-                .userIdx(userIdx)
+                .user(User.builder().idx(userIdx).build())
                 .type(type)
                 .title(title)
                 .contents(contents)

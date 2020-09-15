@@ -15,9 +15,9 @@ public class ChatMessageService {
     public ChatMessage addChatMessage(ChatMessageRequestDto message){
         ChatMessage chatMessage = ChatMessage.builder()
                 .type(message.getType())
-                .rev_idx(1L)
-                .send_idx(2L)
-                .room_idx(3L)
+                .revIdx(1L)
+                .sendIdx(2L)
+                .chatRoom(message.getChatRoom())
                 .message(message.getMessage())
                 .build();
         return chatMessageRepository.save(chatMessage);

@@ -18,6 +18,7 @@ public class Comment extends BaseTimeEntity{
     private Long idx;
 
     @ManyToOne
+    @JoinColumn(name = "post_idx" , referencedColumnName = "idx")
     private Post post;
 
     @NotNull
