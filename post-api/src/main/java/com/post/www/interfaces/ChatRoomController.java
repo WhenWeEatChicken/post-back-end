@@ -14,6 +14,7 @@ import java.util.List;
 
 @Api(tags = {"6.ChatRoomController"})
 @RequiredArgsConstructor
+@CrossOrigin
 @RestController
 @RequestMapping("/chat")
 public class ChatRoomController {
