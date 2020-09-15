@@ -55,7 +55,7 @@ class UserControllerTests {
 
     @Test
     void detail() throws Exception {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjUsIm5hbWUiOiJzdHJpbmciLCJpYXQiOjE2MDAwOTQ2MjQsImV4cCI6MTYwMDEwMTgyNH0.r4IYpVpf0SCsNydkdrqsVXYZB3J2X1VzyeiBPUaF0Wc";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2huIn0.8hm6ZOJykSINHxL-rf0yV882fApL3hyQ9-WGlJUyo2A";
         UserDetailResponseDto responseDto = new UserDetailResponseDto(
                 User.builder()
                         .idx(5L)
@@ -66,7 +66,7 @@ class UserControllerTests {
                         .password("1234")
                         .build()
         );
-        given(userService.getUser(5L)).willReturn(responseDto);
+        given(userService.getUser(1004L)).willReturn(responseDto);
 
         mvc.perform(get("/user")
                 .header("Authorization", "Bearer " + token)

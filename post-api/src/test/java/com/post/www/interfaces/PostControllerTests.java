@@ -4,6 +4,7 @@ import com.post.www.application.PostService;
 import com.post.www.config.enums.PostType;
 import com.post.www.domain.Post;
 import com.post.www.application.PostNotFoundException;
+import com.post.www.domain.User;
 import com.post.www.interfaces.dto.PostResponseDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +103,7 @@ public class PostControllerTests {
                 Post.builder()
                         .idx(3L)
                         .type(PostType.NOTICE)
-                        .user(any())
+                        .user(User.builder().idx(3L).build())
                         .title("JOKER")
                         .contents("Seoul")
                         .publishDate(currenttime)
@@ -142,7 +143,7 @@ public class PostControllerTests {
         given(postService.updatePost(eq(1L), any())).willReturn(
                 Post.builder()
                         .idx(3L)
-                        .user(any())
+                        .user(User.builder().idx(3L).build())
                         .title("JOKER")
                         .contents("Seoul")
                         .publishDate(currenttime)
