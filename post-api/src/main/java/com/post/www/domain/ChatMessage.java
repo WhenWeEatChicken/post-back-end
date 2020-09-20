@@ -1,5 +1,6 @@
 package com.post.www.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.post.www.config.enums.MessageType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +34,7 @@ public class ChatMessage extends BaseTimeEntity{
     @NotNull
     @ManyToOne
     @JoinColumn(name = "room_idx", referencedColumnName = "idx")
+    @JsonIgnore
     private ChatRoom chatRoom;
 
     @NotEmpty

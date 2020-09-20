@@ -1,4 +1,4 @@
-package com.post.www.application;
+package com.post.www.application.exception;
 
 public class EmailExistedException extends RuntimeException {
     public EmailExistedException(String email) {

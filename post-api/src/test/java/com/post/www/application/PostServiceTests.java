@@ -1,8 +1,11 @@
 package com.post.www.application;
 
+import com.post.www.application.exception.PostNotFoundException;
 import com.post.www.config.enums.PostType;
 import com.post.www.domain.Post;
 import com.post.www.domain.PostRepository;
+import com.post.www.domain.User;
+import com.post.www.domain.UserRepository;
 import com.post.www.interfaces.dto.PostRequestDto;
 import com.post.www.interfaces.dto.PostResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+@Transactional
 class PostServiceTests {
 
     @InjectMocks
@@ -31,6 +36,9 @@ class PostServiceTests {
 
     @Mock
     private PostRepository postRepository;
+    @Mock
+    private UserRepository userRepository;
+
 
     @BeforeEach
     void setUp() {
@@ -80,6 +88,11 @@ class PostServiceTests {
 
     @Test
     public void addPost() {
+        User user = User.builder()
+                .idx(1L)
+                .build();
+        given(userRepository.findByIdx(any())).willReturn(Optional.of(user));
+
         given(postRepository.save(any())).will(invocation -> {
             Post post = invocation.getArgument(0);
             return post;

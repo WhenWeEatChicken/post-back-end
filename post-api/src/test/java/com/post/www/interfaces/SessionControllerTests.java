@@ -1,7 +1,7 @@
 package com.post.www.interfaces;
 
-import com.post.www.application.EmailNotExistedException;
-import com.post.www.application.PasswordWrongException;
+import com.post.www.application.exception.EmailNotExistedException;
+import com.post.www.application.exception.PasswordWrongException;
 import com.post.www.application.UserService;
 import com.post.www.domain.User;
 import com.post.www.utils.JwtUtil;

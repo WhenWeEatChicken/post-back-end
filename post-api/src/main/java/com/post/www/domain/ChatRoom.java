@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Getter
 @Builder
@@ -27,5 +28,6 @@ public class ChatRoom extends BaseTimeEntity{
     @NotEmpty
     private String name;
 
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chatRoom")
+    private List<ChatMessage> chatMessages;
 }

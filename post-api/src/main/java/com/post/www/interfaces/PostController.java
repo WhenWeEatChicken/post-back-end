@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -49,12 +50,12 @@ public class PostController {
     @ApiImplicitParams(
             @ApiImplicitParam(name = "Authorization" , value = "Bearer access_token", required = true, dataType = "String", paramType = "header")
     )
-
     @PostMapping("/posts")
     public ResponseEntity<?> create(
-            Authentication authentication,
             @Valid @RequestBody PostRequestDto resource
     ) throws URISyntaxException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         Claims claims = (Claims) authentication.getPrincipal();
         Long userIdx = claims.get("userId", Long.class);
         PostType type = resource.getType();
@@ -68,12 +69,15 @@ public class PostController {
     }
 
     @ApiOperation(value = "게시글 수정", notes = "해당 게시글을 수정합니다.")
+    @ApiImplicitParams(
+            @ApiImplicitParam(name = "Authorization" , value = "Bearer access_token", required = true, dataType = "String", paramType = "header")
+    )
     @PatchMapping("/posts/{idx}")
     public String update(
-            Authentication authentication,
             @PathVariable("idx") Long idx,
             @RequestBody PostRequestDto resource
     ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         postService.updatePost(idx, resource);
         return "{}";

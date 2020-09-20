@@ -1,5 +1,8 @@
 package com.post.www.application;
 
+import com.post.www.application.exception.EmailExistedException;
+import com.post.www.application.exception.EmailNotExistedException;
+import com.post.www.application.exception.PasswordWrongException;
 import com.post.www.config.enums.UserType;
 import com.post.www.domain.User;
 import com.post.www.domain.UserRepository;
@@ -11,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,13 +24,14 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+@Transactional
 class UserServiceTests {
 
     @InjectMocks
     private UserService userService;
 
     @Mock
-    private UserRepository userRepostory;
+    private UserRepository userRepository;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -44,12 +49,11 @@ class UserServiceTests {
                 .name("도훈")
                 .password("pass")
                 .email("dlh1106@naver.com")
-                .photo("")
                 .comments("")
                 .contents("")
                 .build();
         userService.addUser(requestDto);
-        verify(userRepostory).save(any());
+        verify(userRepository).save(any());
     }
 
 
@@ -61,19 +65,18 @@ class UserServiceTests {
                 .name("도훈")
                 .password("pass")
                 .email("dlh1106@naver.com")
-                .photo("")
                 .comments("")
                 .contents("")
                 .build();
 
         User user = User.builder()
                 .build();
-        given(userRepostory.findByEmail(any())).willReturn(Optional.of(user));
+        given(userRepository.findByEmail(any())).willReturn(Optional.of(user));
         assertThatThrownBy(() -> {
             userService.addUser(requestDto);
         }).isInstanceOf(EmailExistedException.class);
 
-        verify(userRepostory, never()).save(any());
+        verify(userRepository, never()).save(any());
     }
 
     @Test
@@ -84,7 +87,7 @@ class UserServiceTests {
         User mockUser = User.builder()
                 .email(email)
                 .build();
-        given(userRepostory.findByEmail(email))
+        given(userRepository.findByEmail(email))
                 .willReturn(Optional.of(mockUser));
 
         given(passwordEncoder.matches(any(), any())).willReturn(true);
@@ -98,7 +101,7 @@ class UserServiceTests {
         String email = "x@test.com";
         String password = "1234";
 
-        given(userRepostory.findByEmail(email))
+        given(userRepository.findByEmail(email))
                 .willReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.authenticate(email,password)).isInstanceOf(EmailNotExistedException.class);
@@ -111,11 +114,30 @@ class UserServiceTests {
 
         User mockUser = User.builder().email(email).build();
 
-        given(userRepostory.findByEmail(email))
+        given(userRepository.findByEmail(email))
                 .willReturn(Optional.of(mockUser));
 
         given(passwordEncoder.matches(any(), any())).willReturn(false);
 
         assertThatThrownBy(() -> userService.authenticate(email, password)).isInstanceOf(PasswordWrongException.class);
+    }
+
+    @Test
+    public void updateUser(){
+        User user = User.builder()
+                .idx(1L)
+                .type(UserType.CUSTORMER)
+                .email("test@test.com")
+                .nickname("dlh1106")
+                .name("gns")
+                .password("1234")
+                .build();
+        given(userRepository.findByIdx(1L))
+                .willReturn(Optional.of(user));
+
+        userService.updateUser(1L, "bbbb","ccc","ssss","aaa","");
+
+        assertThat(user.getNickname()).isEqualTo("bbbb");
+        assertThat(user.getContents()).isEqualTo("aaa");
     }
 }

@@ -3,7 +3,7 @@ package com.post.www.interfaces;
 import com.post.www.application.PostService;
 import com.post.www.config.enums.PostType;
 import com.post.www.domain.Post;
-import com.post.www.application.PostNotFoundException;
+import com.post.www.application.exception.PostNotFoundException;
 import com.post.www.domain.User;
 import com.post.www.interfaces.dto.PostResponseDto;
 import org.junit.jupiter.api.Test;

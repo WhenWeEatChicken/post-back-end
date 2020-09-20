@@ -4,19 +4,20 @@ import com.post.www.application.UserService;
 import com.post.www.config.enums.UserType;
 import com.post.www.domain.User;
 import com.post.www.interfaces.dto.UserDetailResponseDto;
+import com.post.www.interfaces.dto.UserUpdateRequestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
@@ -41,14 +42,14 @@ class UserControllerTests {
 
         given(userService.addUser(any()))
                 .willReturn(mockUser);
-
         mvc.perform(post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"type\":\"CUSTORMER\",\"nickname\":\"dlh1106\",\"name\":\"도훈\",\"email\":\"dlh1106@naver.com\",\"password\":\"password\"}")
         )
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/user/3"))
-                .andExpect(content().string("{}"));
+                .andExpect(content().string("{}"))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN));
 
         verify(userService).addUser(any());
     }
@@ -73,6 +74,33 @@ class UserControllerTests {
         )
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"name\":\"john\"")))
-                .andExpect(content().string(containsString("\"nickname\":\"john\"")));
+                .andExpect(content().string(containsString("\"nickname\":\"john\"")))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void update() throws Exception {
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2huIn0.8hm6ZOJykSINHxL-rf0yV882fApL3hyQ9-WGlJUyo2A";
+//        {}
+        UserUpdateRequestDto requestDto = UserUpdateRequestDto.builder()
+                .nickname("dlh1106")
+                .name("gns")
+                .build();
+
+        MockMultipartFile multipartFile = new MockMultipartFile("photo", "test.txt",
+                "text/plain", "Spring Framework".getBytes());
+        mvc.perform(multipart("/user").file(multipartFile)
+                .with(request -> {
+                    request.setMethod("PATCH");
+                    return request;
+                })
+                .header("Authorization", "Bearer " + token)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .param("requestDto", "{\"nickname\":\"dlh1106\", \"name\":\"gns\", \"comments\":\"aaaa\",\"contents\":\"bbbb\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("{}"))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN));
+
+        verify(userService).updateUser(any(), any(), any(), any(), any(), any());
     }
 }

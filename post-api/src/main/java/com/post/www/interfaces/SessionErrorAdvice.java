@@ -1,7 +1,7 @@
 package com.post.www.interfaces;
 
-import com.post.www.application.EmailNotExistedException;
-import com.post.www.application.PasswordWrongException;
+import com.post.www.application.exception.EmailNotExistedException;
+import com.post.www.application.exception.PasswordWrongException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

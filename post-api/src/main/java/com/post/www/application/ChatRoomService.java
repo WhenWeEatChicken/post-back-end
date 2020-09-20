@@ -23,6 +23,7 @@ public class ChatRoomService {
     }
 
     public ChatRoomResponseDto getRoom(String code) {
+        // TODO: null 예외처리 해야함
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(code).orElse(null);
         return new ChatRoomResponseDto(chatRoom);
     }

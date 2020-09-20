@@ -6,10 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -45,5 +42,12 @@ public class User extends BaseTimeEntity{
 
     private String contents;
 
+    public void updateUser(String nickname, String name, String comments, String contents, String filePath) {
+        this.nickname = nickname;
+        this.name = name;
+        this.comments = comments;
+        this.contents = contents;
+        this.photo = filePath;
+    }
 }
 

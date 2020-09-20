@@ -1,9 +1,12 @@
 package com.post.www.application;
 
+import com.post.www.application.exception.PostNotFoundException;
+import com.post.www.application.exception.UserNotExistedException;
 import com.post.www.config.enums.PostType;
 import com.post.www.domain.Post;
 import com.post.www.domain.PostRepository;
 import com.post.www.domain.User;
+import com.post.www.domain.UserRepository;
 import com.post.www.interfaces.dto.PostRequestDto;
 import com.post.www.interfaces.dto.PostResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     public Page<PostResponseDto> getPosts(Pageable pageable) {
         Page<Post> posts = postRepository.findAll(pageable);
@@ -41,12 +45,14 @@ public class PostService {
     }
 
     public Post addPost(Long userIdx, String title, String contents, String publishDate, PostType type) {
+        User user = userRepository.findByIdx(userIdx)
+                .orElseThrow(() -> new UserNotExistedException(userIdx));
         Post post = Post.builder()
-                .user(User.builder().idx(userIdx).build())
+                .user(user)
                 .type(type)
                 .title(title)
                 .contents(contents)
-                .publishDate(LocalDateTime.parse(publishDate+" 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .publishDate(LocalDateTime.parse(publishDate + " 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
         return postRepository.save(post);
     }
@@ -55,13 +61,11 @@ public class PostService {
     public Post updatePost(Long idx, PostRequestDto requestDto) {
         Post post = postRepository.findByIdx(idx)
                 .orElseThrow(() -> new PostNotFoundException(idx));
-        if (post != null) {
-            String title = requestDto.getTitle();
-            String contents = requestDto.getContents();
-            String publishDate = requestDto.getPublishDate();
+        String title = requestDto.getTitle();
+        String contents = requestDto.getContents();
+        String publishDate = requestDto.getPublishDate();
 
-            post.updatePost(title, contents, LocalDateTime.parse(publishDate + " 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        }
+        post.updatePost(title, contents, LocalDateTime.parse(publishDate + " 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         return post;
     }
 }

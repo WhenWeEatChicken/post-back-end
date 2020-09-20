@@ -1,4 +1,4 @@
-package com.post.www.application;
+package com.post.www.application.exception;
 
 public class PasswordWrongException extends RuntimeException{
     public PasswordWrongException() {
