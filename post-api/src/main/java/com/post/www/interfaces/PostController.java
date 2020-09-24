@@ -5,12 +5,14 @@ import com.post.www.config.enums.PostType;
 import com.post.www.domain.Post;
 import com.post.www.interfaces.dto.PostRequestDto;
 import com.post.www.interfaces.dto.PostResponseDto;
+import com.post.www.interfaces.dto.PostSearchRequestDto;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,6 +26,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+@Slf4j
 @Api(tags = {"1.PostController"})
 @CrossOrigin
 @RequiredArgsConstructor
@@ -35,9 +38,10 @@ public class PostController {
     @ApiOperation(value = "전체 게시글 조회", notes = "모든 게시글을 조회합니다.")
     @GetMapping("/posts")
     public Page<PostResponseDto> list(
-            @PageableDefault(sort = "idx", direction = Sort.Direction.DESC, size = 3) Pageable pageable
+            @PageableDefault(sort = "idx", direction = Sort.Direction.DESC, size = 3) Pageable pageable,
+            @ModelAttribute PostSearchRequestDto requestDto
     ) {
-        return postService.getPosts(pageable);
+        return postService.getPosts(requestDto, pageable);
     }
 
     @ApiOperation(value = "게시글 상세 조회", notes = "해당 게시글의 모든 정보를 조회합니다.")
@@ -48,7 +52,7 @@ public class PostController {
 
     @ApiOperation(value = "게시글 등록", notes = "새로운 게시글을 등록합니다.")
     @ApiImplicitParams(
-            @ApiImplicitParam(name = "Authorization" , value = "Bearer access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "Authorization", value = "Bearer access_token", required = true, dataType = "String", paramType = "header")
     )
     @PostMapping("/posts")
     public ResponseEntity<?> create(
@@ -70,7 +74,7 @@ public class PostController {
 
     @ApiOperation(value = "게시글 수정", notes = "해당 게시글을 수정합니다.")
     @ApiImplicitParams(
-            @ApiImplicitParam(name = "Authorization" , value = "Bearer access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "Authorization", value = "Bearer access_token", required = true, dataType = "String", paramType = "header")
     )
     @PatchMapping("/posts/{idx}")
     public String update(

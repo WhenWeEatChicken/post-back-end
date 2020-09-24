@@ -8,6 +8,7 @@ import com.post.www.domain.User;
 import com.post.www.domain.UserRepository;
 import com.post.www.interfaces.dto.PostRequestDto;
 import com.post.www.interfaces.dto.PostResponseDto;
+import com.post.www.interfaces.dto.PostSearchRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -57,7 +58,9 @@ class PostServiceTests {
                 .build();
         posts.add(post);
         Page<Post> page = new PageImpl(posts);
+        String title = "Seoul";
         given(postRepository.findAll(PageRequest.of(0, 3))).willReturn(page);
+        given(postRepository.findAllByTitleLike(title, PageRequest.of(0, 3))).willReturn(page);
 
         given(postRepository.findByIdx(1L))
                 .willReturn(Optional.of(post));
@@ -65,7 +68,10 @@ class PostServiceTests {
 
     @Test
     public void getPosts() {
-        Page<PostResponseDto> posts = postService.getPosts(PageRequest.of(0, 3));
+        PostSearchRequestDto requestDto = PostSearchRequestDto.builder()
+                .title("Seoul")
+                .build();
+        Page<PostResponseDto> posts = postService.getPosts(requestDto, PageRequest.of(0, 3));
 
         List<PostResponseDto> list = posts.getContent();
         PostResponseDto responseDto = list.get(0);

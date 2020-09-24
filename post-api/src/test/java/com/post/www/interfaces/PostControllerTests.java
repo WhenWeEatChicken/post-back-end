@@ -6,6 +6,7 @@ import com.post.www.domain.Post;
 import com.post.www.application.exception.PostNotFoundException;
 import com.post.www.domain.User;
 import com.post.www.interfaces.dto.PostResponseDto;
+import com.post.www.interfaces.dto.PostSearchRequestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -43,7 +44,7 @@ public class PostControllerTests {
         List<PostResponseDto> posts = new ArrayList<>();
         posts.add(new PostResponseDto(
                 Post.builder()
-                        .idx(1L)
+                        .idx(eq(1L))
                         .user(any())
                         .title("JOKER")
                         .contents("Seoul")
@@ -51,7 +52,10 @@ public class PostControllerTests {
                         .build()
         ));
         Page<PostResponseDto> page = new PageImpl(posts);
-        given(postService.getPosts(PageRequest.of(0, 3))).willReturn(page);
+        PostSearchRequestDto requestDto = PostSearchRequestDto.builder()
+                .title("JOKER")
+                .build();
+        given(postService.getPosts(requestDto, PageRequest.of(0, 3))).willReturn(page);
 
         mvc.perform(get("/posts"))
                 .andExpect(status().isOk())
@@ -120,7 +124,7 @@ public class PostControllerTests {
                 .andExpect(header().string("location", "/posts/3"))
                 .andExpect(content().string("{}"));
 
-        verify(postService).addPost(any(),any(), any(), any(), any());
+        verify(postService).addPost(any(), any(), any(), any(), any());
 
     }
 
@@ -131,7 +135,7 @@ public class PostControllerTests {
                 .content("{\"userIdx\":1,\"title\":\"\",\"contents\":\"\"}"))
                 .andExpect(status().isBadRequest());
 
-        verify(postService, never()).addPost(any(),any(), any(), any(), any());
+        verify(postService, never()).addPost(any(), any(), any(), any(), any());
 
     }
 

@@ -5,13 +5,20 @@ import com.post.www.config.enums.UserType;
 import com.post.www.domain.User;
 import com.post.www.interfaces.dto.UserDetailResponseDto;
 import com.post.www.interfaces.dto.UserUpdateRequestDto;
+import com.post.www.utils.JwtUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.impl.DefaultClaims;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockPart;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.nio.charset.StandardCharsets;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,6 +35,7 @@ class UserControllerTests {
 
     @MockBean
     private UserService userService;
+
 
     @Test
     public void create() throws Exception {
@@ -80,23 +88,23 @@ class UserControllerTests {
 
     @Test
     void update() throws Exception {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2huIn0.8hm6ZOJykSINHxL-rf0yV882fApL3hyQ9-WGlJUyo2A";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjYsIm5hbWUiOiLtm4giLCJpYXQiOjE2MDA5NDY5MTcsImV4cCI6MTYwMDk1NDExN30.eJ3LighNkf0wujYeVDyqPOxRAspvDWpBgiLSvN3vL-M";
 //        {}
-        UserUpdateRequestDto requestDto = UserUpdateRequestDto.builder()
-                .nickname("dlh1106")
-                .name("gns")
-                .build();
-
         MockMultipartFile multipartFile = new MockMultipartFile("photo", "test.txt",
                 "text/plain", "Spring Framework".getBytes());
-        mvc.perform(multipart("/user").file(multipartFile)
-                .with(request -> {
-                    request.setMethod("PATCH");
-                    return request;
-                })
-                .header("Authorization", "Bearer " + token)
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-                .param("requestDto", "{\"nickname\":\"dlh1106\", \"name\":\"gns\", \"comments\":\"aaaa\",\"contents\":\"bbbb\"}"))
+
+        mvc.perform(multipart("/f-user")
+                        .file(multipartFile)
+//                .with(request -> {
+//                    request.setMethod("PATCH");
+//                    return request;
+//                })
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                        .param("contents","ssss")
+                        .param("nickname","ss")
+                        .param("name","gnm")
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().string("{}"))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN));

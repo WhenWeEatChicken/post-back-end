@@ -9,6 +9,7 @@ import com.post.www.domain.User;
 import com.post.www.domain.UserRepository;
 import com.post.www.interfaces.dto.PostRequestDto;
 import com.post.www.interfaces.dto.PostResponseDto;
+import com.post.www.interfaces.dto.PostSearchRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,11 +31,16 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public Page<PostResponseDto> getPosts(Pageable pageable) {
-        Page<Post> posts = postRepository.findAll(pageable);
-        List list = posts.stream().map(PostResponseDto::new).collect(Collectors.toList());
-        Page<PostResponseDto> responseDtos = new PageImpl<PostResponseDto>(list);
-        return responseDtos;
+    public Page<PostResponseDto> getPosts(PostSearchRequestDto requestDto, Pageable pageable) {
+        String title = requestDto.getTitle();
+        Page<Post> posts;
+        if (title != null && !title.equals("")) {
+             posts = postRepository.findAllByTitleLike(title, pageable);
+        }else{
+             posts = postRepository.findAll(pageable);
+        }
+        List<PostResponseDto> list = posts.stream().map(PostResponseDto::new).collect(Collectors.toList());
+        return new PageImpl<>(list);
     }
 
     public PostResponseDto getPost(Long idx) {

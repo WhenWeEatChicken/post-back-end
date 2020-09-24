@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -63,10 +64,9 @@ public class UserController {
     @ApiImplicitParams(
             @ApiImplicitParam(name = "Authorization", value = "Bearer access_token", required = true, dataType = "String", paramType = "header")
     )
-    @PatchMapping("/user")
+    @PostMapping(value = "/f-user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> update(
-            @RequestPart(value = "photo", required = false) MultipartFile file,
-            @ModelAttribute UserUpdateRequestDto requestDto
+            @ModelAttribute @Valid UserUpdateRequestDto requestDto
             ) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Claims claims = (Claims) authentication.getPrincipal();
@@ -77,9 +77,12 @@ public class UserController {
         String contents = requestDto.getContents();
 
         LocalDate localDate = LocalDate.now();
-        String filePath = tempPath + localDate + UUID.randomUUID().toString().replace("-", "");
+        String filePath = "";
         try {
-            file.transferTo(new File(filePath));
+            if(requestDto.getPhoto() != null){
+                filePath = tempPath + localDate + UUID.randomUUID().toString().replace("-", "");
+                requestDto.getPhoto().transferTo(new File(filePath));
+            }
         } catch (IOException e) {
             throw e;
         }
