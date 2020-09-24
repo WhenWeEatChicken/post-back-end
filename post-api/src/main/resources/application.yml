@@ -9,15 +9,16 @@ spring:
 #    url: jdbc:mysql://localhost:3306/test
 #    username: root
 #    password: ehgns5545@
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 #  jpa:
 #    properties:
 #      hibernate:
 #        show_sql: true
 #        format_sql: true
-  freemarker:
-    template-loader-path: classpath:/templates/
-    cache: false
-    suffix: .ftl
 logging:
   level:
     org:
@@ -28,3 +29,8 @@ logging:
 
 jwt:
   secret: 12345678901234567890123456789012
+
+temp:
+#로컬
+#  path: D:\workspace\post\data\
+  path: /app/git/spring_web_service/data/
