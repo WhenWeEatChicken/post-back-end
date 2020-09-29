@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://database-1.cffkzrmsg6dh.ap-northeast-2.rds.amazonaws.com:3306/test
+    url: jdbc:mysql://when-we-eat-chickent-2020-db.mysql.database.azure.com:3306/test
     username: user
     password: ehgns5545
     hikari:
