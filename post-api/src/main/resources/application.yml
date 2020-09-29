@@ -1,8 +1,8 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://when-we-eat-chickent-2020-db.mysql.database.azure.com:3306/test
-    username: user
+    url: jdbc:mysql://when-we-eat-chickent-2020-db.mysql.database.azure.com:3306/test?serverTimezone=UTC
+    username: user@when-we-eat-chickent-2020-db
     password: ehgns5545
     hikari:
       idle-timeout: 10000
@@ -37,5 +37,5 @@ jwt:
 
 temp:
 #로컬
-#  path: D:\workspace\post\data\
-  path: /app/git/spring_web_service/data/
+  path: D:\workspace\post\data\
+#  path: /app/git/spring_web_service/data/
