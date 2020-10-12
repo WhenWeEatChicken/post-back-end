@@ -12,7 +12,7 @@ import java.util.List;
 
 @Api(tags = {"5.ChatRoomController"})
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/chat")
 public class ChatRoomController {
