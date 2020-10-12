@@ -37,7 +37,6 @@ import java.util.UUID;
 
 @Slf4j
 @Api(tags = {"1.PostController"})
-@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", maxAge = 3600, allowCredentials = "true")
 @RequiredArgsConstructor
 @RestController
 public class PostController {
