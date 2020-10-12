@@ -28,8 +28,7 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .csrf().disable()
-                .cors()
-                .and()
+                .cors().disable()
                 .formLogin().disable()
                 .headers().frameOptions().disable()
                 .and()
