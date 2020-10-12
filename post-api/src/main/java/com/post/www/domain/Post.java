@@ -1,6 +1,7 @@
 package com.post.www.domain;
 
 
+import com.post.www.config.enums.PostStatus;
 import com.post.www.config.enums.PostType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,15 +40,23 @@ public class Post extends BaseTimeEntity {
     private String title;
 
     @NotNull
+    private PostStatus status;
+
     private LocalDateTime publishDate;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     private List<Comment> comments;
 
-    public void updatePost(@NotEmpty String title, @NotEmpty String contents, @NotNull LocalDateTime publishDate) {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    private List<File> files;
+
+    public void updatePost(@NotEmpty String title, @NotEmpty String contents, @NotNull PostStatus status) {
         this.title = title;
         this.contents = contents;
-        this.publishDate = publishDate;
+        this.status = status;
+        if(status.equals(PostStatus.Y) && this.publishDate == null){
+            this.publishDate = LocalDateTime.now();
+        }
     }
 
 }

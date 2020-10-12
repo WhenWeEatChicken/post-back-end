@@ -2,6 +2,7 @@ package com.post.www.application;
 
 import com.post.www.application.exception.PostNotFoundException;
 import com.post.www.application.exception.UserNotExistedException;
+import com.post.www.config.enums.PostStatus;
 import com.post.www.config.enums.PostType;
 import com.post.www.domain.Post;
 import com.post.www.domain.PostRepository;
@@ -17,8 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +49,7 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
-    public Post addPost(Long userIdx, String title, String contents, String publishDate, PostType type) {
+    public Post addPost(Long userIdx, String title, String contents, PostStatus status, PostType type) {
         User user = userRepository.findByIdx(userIdx)
                 .orElseThrow(() -> new UserNotExistedException(userIdx));
         Post post = Post.builder()
@@ -58,7 +57,7 @@ public class PostService {
                 .type(type)
                 .title(title)
                 .contents(contents)
-                .publishDate(LocalDateTime.parse(publishDate + " 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .status(status)
                 .build();
         return postRepository.save(post);
     }
@@ -69,9 +68,9 @@ public class PostService {
                 .orElseThrow(() -> new PostNotFoundException(idx));
         String title = requestDto.getTitle();
         String contents = requestDto.getContents();
-        String publishDate = requestDto.getPublishDate();
+        PostStatus status = requestDto.getStatus();
 
-        post.updatePost(title, contents, LocalDateTime.parse(publishDate + " 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        post.updatePost(title, contents, status);
         return post;
     }
 }

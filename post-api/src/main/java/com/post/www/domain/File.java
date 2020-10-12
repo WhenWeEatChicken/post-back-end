@@ -1,14 +1,12 @@
 package com.post.www.domain;
 
+import com.post.www.config.enums.FileType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -29,10 +27,11 @@ public class File extends BaseTimeEntity{
     @NotEmpty
     private String fileName;
 
-    @NotNull
-    private Long refIdx;
+    @ManyToOne
+    @JoinColumn(name = "ref_idx" , referencedColumnName = "idx")
+    private Post post;
 
     @NotNull
-    private String refType;
+    private FileType refType;
 
 }

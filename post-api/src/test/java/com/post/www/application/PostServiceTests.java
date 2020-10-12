@@ -1,6 +1,7 @@
 package com.post.www.application;
 
 import com.post.www.application.exception.PostNotFoundException;
+import com.post.www.config.enums.PostStatus;
 import com.post.www.config.enums.PostType;
 import com.post.www.domain.Post;
 import com.post.www.domain.PostRepository;
@@ -19,7 +20,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -107,9 +107,9 @@ class PostServiceTests {
         Long userIdx = 1L;
         String title = "BeRyong";
         String contents = "Busan";
-        String publishDate = "2011-11-11";
         PostType type = PostType.NOTICE;
-        Post created = postService.addPost(userIdx, title, contents, publishDate, type);
+        PostStatus status = PostStatus.Y;
+        Post created = postService.addPost(userIdx, title, contents, status, type);
         assertThat(created.getTitle()).isEqualTo("BeRyong");
     }
 
@@ -117,9 +117,10 @@ class PostServiceTests {
     public void updatePost() {
         Post post = Post.builder()
                 .idx(1L)
+                .user(User.builder().idx(1L).build())
                 .title("Bob zip")
                 .contents("Seoul")
-                .publishDate(LocalDateTime.now())
+                .status(PostStatus.Y)
                 .build();
 
         given(postRepository.findByIdx(1L))
@@ -127,7 +128,7 @@ class PostServiceTests {
         PostRequestDto postRequestDto = PostRequestDto.builder()
                 .title("BeRyong")
                 .contents("Busan")
-                .publishDate("2011-11-11")
+                .status(PostStatus.Y)
                 .build();
 
         postService.updatePost(1L, postRequestDto);

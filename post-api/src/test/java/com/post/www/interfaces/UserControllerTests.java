@@ -80,7 +80,7 @@ class UserControllerTests {
 
     @Test
     void update() throws Exception {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjYsIm5hbWUiOiLtm4giLCJpYXQiOjE2MDA5NDY5MTcsImV4cCI6MTYwMDk1NDExN30.eJ3LighNkf0wujYeVDyqPOxRAspvDWpBgiLSvN3vL-M";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2huIn0.8hm6ZOJykSINHxL-rf0yV882fApL3hyQ9-WGlJUyo2A";
 //        {}
         MockMultipartFile multipartFile = new MockMultipartFile("photo", "test.txt",
                 "text/plain", "Spring Framework".getBytes());

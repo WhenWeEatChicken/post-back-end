@@ -4,16 +4,16 @@ spring:
     url: jdbc:mysql://when-we-eat-chickent-2020-db.mysql.database.azure.com:3306/test?serverTimezone=UTC
     username: user@when-we-eat-chickent-2020-db
     password: ehgns5545
+    #   local 테스트용
+#    url: jdbc:mysql://localhost:3306/test
+#    username: root
+#    password: ehgns5545@
     hikari:
       idle-timeout: 10000
       max-lifetime: 420000
       connection-timeout: 10000
       validation-timeout: 10000
 
-  #   local 테스트용
-#    url: jdbc:mysql://localhost:3306/test
-#    username: root
-#    password: ehgns5545@
 
   servlet:
     multipart:
@@ -36,6 +36,6 @@ jwt:
   secret: 12345678901234567890123456789012
 
 temp:
+  path: /app/git/spring_web_service/data/
 #로컬
-  path: D:\workspace\post\data\
-#  path: /app/git/spring_web_service/data/
+#  path: D:\workspace\post\data\

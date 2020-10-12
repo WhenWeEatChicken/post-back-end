@@ -1,6 +1,8 @@
 package com.post.www.interfaces;
 
+import com.post.www.application.FileService;
 import com.post.www.application.PostService;
+import com.post.www.config.enums.PostStatus;
 import com.post.www.config.enums.PostType;
 import com.post.www.domain.Post;
 import com.post.www.application.exception.PostNotFoundException;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
@@ -38,6 +41,8 @@ public class PostControllerTests {
 
     @MockBean
     private PostService postService;
+    @MockBean
+    private FileService fileService;
 
     @Test
     public void list() throws Exception {
@@ -102,7 +107,6 @@ public class PostControllerTests {
     public void create() throws Exception {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2huIn0.8hm6ZOJykSINHxL-rf0yV882fApL3hyQ9-WGlJUyo2A";
 
-        LocalDateTime currenttime = LocalDateTime.now();
         given(postService.addPost(any(), any(), any(), any(), any())).willReturn(
                 Post.builder()
                         .idx(3L)
@@ -110,29 +114,40 @@ public class PostControllerTests {
                         .user(User.builder().idx(3L).build())
                         .title("JOKER")
                         .contents("Seoul")
-                        .publishDate(currenttime)
+                        .status(PostStatus.Y)
                         .build()
         );
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "test.txt",
+                "text/plain", "Spring Framework".getBytes());
 
-        mvc.perform(post("/posts")
+        mvc.perform(multipart("/posts")
+                .file(multipartFile)
                 .header("Authorization", "Bearer " + token)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"type\":\"NOTICE\",\"userIdx\":1,\"title\":\"JOKER\",\"contents\":\"Seoul\"" +
-                        ",\"publishDate\":\"2011-11-11\"}")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+//                .content("{\"type\":\"NOTICE\",\"userIdx\":1,\"title\":\"JOKER\",\"contents\":\"Seoul\"" +
+//                        ",\"status\":\"Y\"}")
+
+                .param("type","NOTICE")
+                .param("userIdx","1")
+                .param("title","JOKER")
+                .param("contents","Seoul")
+                .param("status","Y")
         )
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/posts/3"))
                 .andExpect(content().string("{}"));
 
         verify(postService).addPost(any(), any(), any(), any(), any());
-
+        verify(fileService).addFile(any(), any(), any(), any());
     }
 
     @Test
     public void createWithInvalidData() throws Exception {
         mvc.perform(post("/posts")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"userIdx\":1,\"title\":\"\",\"contents\":\"\"}"))
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .param("type","NOTICE")
+//                .content("{\"userIdx\":1,\"title\":\"\",\"contents\":\"\"}")
+        )
                 .andExpect(status().isBadRequest());
 
         verify(postService, never()).addPost(any(), any(), any(), any(), any());
@@ -142,7 +157,7 @@ public class PostControllerTests {
 
     @Test
     public void update() throws Exception {
-        LocalDateTime currenttime = LocalDateTime.now();
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2huIn0.8hm6ZOJykSINHxL-rf0yV882fApL3hyQ9-WGlJUyo2A";
 
         given(postService.updatePost(eq(1L), any())).willReturn(
                 Post.builder()
@@ -150,13 +165,14 @@ public class PostControllerTests {
                         .user(User.builder().idx(3L).build())
                         .title("JOKER")
                         .contents("Seoul")
-                        .publishDate(currenttime)
+                        .status(PostStatus.Y)
                         .build()
         );
         mvc.perform(patch("/posts/1")
+                .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"userIdx\":1,\"title\":\"JOKER Bar\"," +
-                        "\"contents\":\"Busan\",\"publishDate\":\"2011-11-11\"}"))
+                        "\"contents\":\"Busan\",\"status\":\"Y\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("{}"));
 
