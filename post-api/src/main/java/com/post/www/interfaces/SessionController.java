@@ -20,7 +20,6 @@ import java.net.URISyntaxException;
 
 @Api(tags = {"4.SessionController"})
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 public class SessionController {
 
