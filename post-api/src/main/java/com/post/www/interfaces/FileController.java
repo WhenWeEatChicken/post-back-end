@@ -26,7 +26,7 @@ import java.nio.file.Paths;
 @Api(tags = {"6.FileController"})
 @Slf4j
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class FileController {
 

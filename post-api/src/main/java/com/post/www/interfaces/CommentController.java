@@ -16,7 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @Api(tags = {"2.CommentController"})
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @RestController
 public class CommentController {

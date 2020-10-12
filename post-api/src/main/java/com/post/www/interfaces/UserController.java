@@ -27,7 +27,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Api(tags = {"3.UserController"})
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @RestController
 public class UserController {

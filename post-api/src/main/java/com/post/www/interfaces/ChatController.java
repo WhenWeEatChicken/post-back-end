@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Api(tags = {"5.ChatController"})
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
 public class ChatController {
 

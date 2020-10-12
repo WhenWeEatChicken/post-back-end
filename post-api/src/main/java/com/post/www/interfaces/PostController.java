@@ -37,7 +37,7 @@ import java.util.UUID;
 
 @Slf4j
 @Api(tags = {"1.PostController"})
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @RestController
 public class PostController {
