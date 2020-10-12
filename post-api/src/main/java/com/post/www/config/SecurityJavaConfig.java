@@ -33,7 +33,7 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .csrf().disable()
-                .cors()
+                .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .formLogin().disable()
                 .headers().frameOptions().disable()
