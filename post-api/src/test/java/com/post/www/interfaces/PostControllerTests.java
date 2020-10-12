@@ -7,7 +7,8 @@ import com.post.www.config.enums.PostType;
 import com.post.www.domain.Post;
 import com.post.www.application.exception.PostNotFoundException;
 import com.post.www.domain.User;
-import com.post.www.interfaces.dto.PostResponseDto;
+import com.post.www.interfaces.dto.PostDetailResponseDto;
+import com.post.www.interfaces.dto.PostListResponseDto;
 import com.post.www.interfaces.dto.PostSearchRequestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,8 @@ public class PostControllerTests {
 
     @Test
     public void list() throws Exception {
-        List<PostResponseDto> posts = new ArrayList<>();
-        posts.add(new PostResponseDto(
+        List<PostListResponseDto> posts = new ArrayList<>();
+        posts.add(new PostListResponseDto(
                 Post.builder()
                         .idx(eq(1L))
                         .user(any())
@@ -56,7 +57,7 @@ public class PostControllerTests {
                         .publishDate(LocalDateTime.now())
                         .build()
         ));
-        Page<PostResponseDto> page = new PageImpl(posts);
+        Page<PostListResponseDto> page = new PageImpl(posts);
         PostSearchRequestDto requestDto = PostSearchRequestDto.builder()
                 .title("JOKER")
                 .build();
@@ -72,13 +73,13 @@ public class PostControllerTests {
 
     @Test
     public void detail() throws Exception {
-        PostResponseDto post = new PostResponseDto(
+        PostDetailResponseDto post = new PostDetailResponseDto(
                 Post.builder()
                         .idx(1L)
-                        .user(any())
+                        .user(User.builder().idx(1L).build())
                         .title("JOKER")
                         .contents("Seoul")
-                        .publishDate(LocalDateTime.now())
+                        .status(PostStatus.Y)
                         .build()
         );
         given(postService.getPost(1L)).willReturn(post);

@@ -9,10 +9,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
-public class PostResponseDto {
+public class PostDetailResponseDto {
 
     private Long idx;
     private String contents;
@@ -21,10 +22,10 @@ public class PostResponseDto {
     private LocalDateTime publishDate;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-    private List<File> files;
+    private List<FileResponseDto> files;
 
     @Builder
-    public PostResponseDto(Post entity) {
+    public PostDetailResponseDto(Post entity) {
         this.idx = entity.getIdx();
         this.contents = entity.getContents();
         this.title = entity.getTitle();
@@ -32,6 +33,8 @@ public class PostResponseDto {
         this.publishDate = entity.getPublishDate();
         this.createDate = entity.getCreatedDate();
         this.updateDate = entity.getModifiedDate();
-        this.files = entity.getFiles();
+        if(entity.getFiles() != null){
+            this.files = entity.getFiles().stream().map(FileResponseDto::new).collect(Collectors.toList());
+        }
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(tags = {"6.ChatRoomController"})
+@Api(tags = {"5.ChatRoomController"})
 @RequiredArgsConstructor
 @CrossOrigin
 @RestController

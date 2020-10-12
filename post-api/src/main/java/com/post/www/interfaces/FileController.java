@@ -2,6 +2,9 @@ package com.post.www.interfaces;
 
 import com.post.www.application.FileService;
 import com.post.www.domain.File;
+import com.post.www.interfaces.dto.FileResponseDto;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@Api(tags = {"6.FileController"})
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin
@@ -47,9 +51,10 @@ public class FileController {
         return ResponseEntity.created(url).body(filePath);
     }*/
 
+    @ApiOperation(value = "파일 다운로드", notes = "파일 다운로드시 사용.")
     @GetMapping("/download/{fileId}")
     public ResponseEntity<Resource> download(@PathVariable("fileId") Long fileId) throws IOException {
-        File file = fileService.getFile(fileId);
+        FileResponseDto file = fileService.getFile(fileId);
         Path path = Paths.get(file.getFilePath());
         Resource resource = new InputStreamResource(Files.newInputStream(path));
         return ResponseEntity.ok()

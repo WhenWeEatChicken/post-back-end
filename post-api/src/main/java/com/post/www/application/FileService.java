@@ -7,6 +7,7 @@ import com.post.www.domain.Comment;
 import com.post.www.domain.File;
 import com.post.www.domain.FileRepository;
 import com.post.www.domain.Post;
+import com.post.www.interfaces.dto.FileResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -45,9 +46,10 @@ public class FileService {
         return fileRepository.save(file);
     }
 
-    public File getFile(Long fileId) {
+    public FileResponseDto getFile(Long fileId) {
         File file = fileRepository.findByIdx(fileId)
                 .orElseThrow(() -> new FileNotFoundException(fileId));
-        return file;
+
+        return new FileResponseDto(file);
     }
 }

@@ -8,8 +8,9 @@ import com.post.www.domain.Post;
 import com.post.www.domain.PostRepository;
 import com.post.www.domain.User;
 import com.post.www.domain.UserRepository;
+import com.post.www.interfaces.dto.PostListResponseDto;
 import com.post.www.interfaces.dto.PostRequestDto;
-import com.post.www.interfaces.dto.PostResponseDto;
+import com.post.www.interfaces.dto.PostDetailResponseDto;
 import com.post.www.interfaces.dto.PostSearchRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,7 +31,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public Page<PostResponseDto> getPosts(PostSearchRequestDto requestDto, Pageable pageable) {
+    public Page<PostListResponseDto> getPosts(PostSearchRequestDto requestDto, Pageable pageable) {
         String title = requestDto.getTitle();
         Page<Post> posts;
         if (title != null && !title.equals("")) {
@@ -38,15 +39,15 @@ public class PostService {
         }else{
              posts = postRepository.findAll(pageable);
         }
-        List<PostResponseDto> list = posts.stream().map(PostResponseDto::new).collect(Collectors.toList());
+        List<PostListResponseDto> list = posts.stream().map(PostListResponseDto::new).collect(Collectors.toList());
         return new PageImpl<>(list);
     }
 
-    public PostResponseDto getPost(Long idx) {
+    public PostDetailResponseDto getPost(Long idx) {
         Post post = postRepository.findByIdx(idx)
                 .orElseThrow(() -> new PostNotFoundException(idx));
 
-        return new PostResponseDto(post);
+        return new PostDetailResponseDto(post);
     }
 
     public Post addPost(Long userIdx, String title, String contents, PostStatus status, PostType type) {

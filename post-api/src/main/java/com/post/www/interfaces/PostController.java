@@ -5,8 +5,9 @@ import com.post.www.application.PostService;
 import com.post.www.config.enums.PostStatus;
 import com.post.www.config.enums.PostType;
 import com.post.www.domain.Post;
+import com.post.www.interfaces.dto.PostListResponseDto;
 import com.post.www.interfaces.dto.PostRequestDto;
-import com.post.www.interfaces.dto.PostResponseDto;
+import com.post.www.interfaces.dto.PostDetailResponseDto;
 import com.post.www.interfaces.dto.PostSearchRequestDto;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
@@ -49,7 +50,7 @@ public class PostController {
 
     @ApiOperation(value = "전체 게시글 조회", notes = "모든 게시글을 조회합니다.")
     @GetMapping("/posts")
-    public Page<PostResponseDto> list(
+    public Page<PostListResponseDto> list(
             @PageableDefault(sort = "idx", direction = Sort.Direction.DESC, size = 3) Pageable pageable,
             @ModelAttribute PostSearchRequestDto requestDto
     ) {
@@ -58,7 +59,7 @@ public class PostController {
 
     @ApiOperation(value = "게시글 상세 조회", notes = "해당 게시글의 모든 정보를 조회합니다.")
     @GetMapping("/posts/{idx}")
-    public PostResponseDto detail(@PathVariable("idx") Long idx) {
+    public PostDetailResponseDto detail(@PathVariable("idx") Long idx) {
         return postService.getPost(idx);
     }
 

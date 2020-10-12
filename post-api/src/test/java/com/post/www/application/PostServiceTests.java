@@ -7,8 +7,9 @@ import com.post.www.domain.Post;
 import com.post.www.domain.PostRepository;
 import com.post.www.domain.User;
 import com.post.www.domain.UserRepository;
+import com.post.www.interfaces.dto.PostListResponseDto;
 import com.post.www.interfaces.dto.PostRequestDto;
-import com.post.www.interfaces.dto.PostResponseDto;
+import com.post.www.interfaces.dto.PostDetailResponseDto;
 import com.post.www.interfaces.dto.PostSearchRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,16 +72,16 @@ class PostServiceTests {
         PostSearchRequestDto requestDto = PostSearchRequestDto.builder()
                 .title("Seoul")
                 .build();
-        Page<PostResponseDto> posts = postService.getPosts(requestDto, PageRequest.of(0, 3));
+        Page<PostListResponseDto> posts = postService.getPosts(requestDto, PageRequest.of(0, 3));
 
-        List<PostResponseDto> list = posts.getContent();
-        PostResponseDto responseDto = list.get(0);
+        List<PostListResponseDto> list = posts.getContent();
+        PostListResponseDto responseDto = list.get(0);
         assertThat(responseDto.getIdx()).isEqualTo(1L);
     }
 
     @Test
     public void getPost() {
-        PostResponseDto responseDto = postService.getPost(1L);
+        PostDetailResponseDto responseDto = postService.getPost(1L);
 
         assertThat(responseDto.getIdx()).isEqualTo(1L);
     }
