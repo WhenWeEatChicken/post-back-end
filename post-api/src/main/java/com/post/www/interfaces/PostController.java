@@ -97,7 +97,7 @@ public class PostController {
 
 
         URI location = new URI("/posts/" + post.getIdx());
-        return ResponseEntity.created(location).header("Access-Control-Allow-Origin","*").body("{}");
+        return ResponseEntity.created(location).body("{}");
     }
 
     @ApiOperation(value = "게시글 수정", notes = "해당 게시글을 수정합니다.")
