@@ -42,14 +42,14 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     private Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
-        if (token == null) {
-            return null;
+        if (token != null) {
+            Claims claims = jwtUtil.getClaims(token.substring("Bearer ".length()));
+
+            return new UsernamePasswordAuthenticationToken(claims,null);
         }
-
-        Claims claims = jwtUtil.getClaims(token.substring("Bearer ".length()));
-
-        Authentication authentication
-                = new UsernamePasswordAuthenticationToken(claims,null);
-        return authentication;
+        return null;
     }
+
+
+
 }

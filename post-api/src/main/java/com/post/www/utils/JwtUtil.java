@@ -1,10 +1,8 @@
 package com.post.www.utils;
 
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.post.www.application.exception.TokenExpiredException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
@@ -12,7 +10,6 @@ import java.util.Date;
 
 public class JwtUtil {
     private Key key;
-    private Long tokenUseTimeMiliSecond = 2000L * 60 * 60; //2시간
 
     public JwtUtil(String secret) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
@@ -20,11 +17,12 @@ public class JwtUtil {
 
     public String createToken(Long userId, String name) {
         Date now = new Date();
+        Long tokenUseTime = 2000L * 60 * 60; //2시간
         JwtBuilder builder = Jwts.builder()
                 .claim("userId", userId)
                 .claim("name", name)
                 .setIssuedAt(now) //발행일자
-                .setExpiration(new Date(now.getTime() + tokenUseTimeMiliSecond));//만료일자
+                .setExpiration(new Date(now.getTime() + tokenUseTime));//만료일자
 
         return builder
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -33,9 +31,15 @@ public class JwtUtil {
 
     //토큰의 정보 추출
     public Claims getClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(key)
-                .parseClaimsJws(token) //jws 란 sign이 포함된 jwt 의미
-                .getBody();
+        try {
+            return Jwts.parser()
+                    .setSigningKey(key)
+                    .parseClaimsJws(token) //jws 란 sign이 포함된 jwt 의미
+                    .getBody();
+        }catch (ExpiredJwtException e){
+            throw new TokenExpiredException();
+        }
     }
+
+
 }

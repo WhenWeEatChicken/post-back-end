@@ -96,17 +96,16 @@ public class PostControllerTests {
 
     @Test
     public void detailWithNotExisted() throws Exception {
-        given(postService.getPost(404L))
-                .willThrow(new PostNotFoundException(404L));
+        given(postService.getPost(101L))
+                .willThrow(new PostNotFoundException(101L));
 
-        mvc.perform(get("/posts/404"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("{}"));
+        mvc.perform(get("/posts/101"))
+                .andExpect(status().isNotFound());
     }
 
     @Test
     public void create() throws Exception {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2huIn0.8hm6ZOJykSINHxL-rf0yV882fApL3hyQ9-WGlJUyo2A";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjYsIm5hbWUiOiJzdHJpbmciLCJpYXQiOjE2MDM3MjY2NjAsImV4cCI6MTYwMzczMzg2MH0._omnEFt7ZZDRqnQBxk-eXdCp9MMxNuzrBIiFW_Z3HPs";
 
         given(postService.addPost(any(), any(), any(), any(), any())).willReturn(
                 Post.builder()
@@ -158,7 +157,7 @@ public class PostControllerTests {
 
     @Test
     public void update() throws Exception {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2huIn0.8hm6ZOJykSINHxL-rf0yV882fApL3hyQ9-WGlJUyo2A";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjYsIm5hbWUiOiJzdHJpbmciLCJpYXQiOjE2MDM3MjY2NjAsImV4cCI6MTYwMzczMzg2MH0._omnEFt7ZZDRqnQBxk-eXdCp9MMxNuzrBIiFW_Z3HPs";
 
         given(postService.updatePost(eq(1L), any())).willReturn(
                 Post.builder()
