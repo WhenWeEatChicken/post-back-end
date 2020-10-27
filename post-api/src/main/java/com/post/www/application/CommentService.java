@@ -34,4 +34,9 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
+    public Comment updateComment(CommentRequestDto requestDto){
+        Comment comment = Comment.builder()
+                .build();
+        return commentRepository.save(comment);
+    }
 }

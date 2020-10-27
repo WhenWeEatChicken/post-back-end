@@ -3,11 +3,14 @@ package com.post.www.interfaces;
 import com.post.www.application.ChatMessageService;
 import com.post.www.config.enums.MessageType;
 import com.post.www.interfaces.dto.ChatMessageRequestDto;
+import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 @Api(tags = {"5.ChatController"})
@@ -29,6 +32,10 @@ public class ChatController {
     }
 
     private void addChatMessage(ChatMessageRequestDto message) {
-        chatMessageService.addChatMessage(message);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userIdx = claims.get("userId", Long.class);
+        chatMessageService.addChatMessage(userIdx, message);
     }
 }

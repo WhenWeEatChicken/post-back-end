@@ -29,9 +29,6 @@ public class ChatMessage extends BaseTimeEntity{
     private Long sendIdx;
 
     @NotNull
-    private Long revIdx;
-
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "room_idx", referencedColumnName = "idx")
     @JsonIgnore

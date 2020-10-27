@@ -62,7 +62,7 @@ public class PostController {
         return postService.getPost(idx);
     }
 
-    @ApiOperation(value = "게시글 등록", notes = "새로운 게시글을 등록합니다.")
+    @ApiOperation(value = "게시글 등록", notes = "새로운 게시글을 등록합니다. (status = 1. Y, 2. N / type = FEEDBACK, QNA, NOTICE)")
     @ApiImplicitParams(
             @ApiImplicitParam(name = "Authorization", value = "Bearer access_token", required = true, dataType = "String", paramType = "header")
     )
@@ -100,7 +100,7 @@ public class PostController {
         return ResponseEntity.created(location).body("{}");
     }
 
-    @ApiOperation(value = "게시글 수정", notes = "해당 게시글을 수정합니다.")
+    @ApiOperation(value = "게시글 수정", notes = "해당 게시글을 수정합니다. (status = 1. Y, 2. N / type = FEEDBACK, QNA, NOTICE)")
     @ApiImplicitParams(
             @ApiImplicitParam(name = "Authorization", value = "Bearer access_token", required = true, dataType = "String", paramType = "header")
     )
@@ -114,5 +114,6 @@ public class PostController {
         postService.updatePost(idx, resource);
         return "{}";
     }
+
 
 }

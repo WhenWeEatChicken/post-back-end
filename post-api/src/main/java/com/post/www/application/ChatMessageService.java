@@ -12,11 +12,10 @@ public class ChatMessageService {
 
     private final ChatMessageRepository chatMessageRepository;
 
-    public ChatMessage addChatMessage(ChatMessageRequestDto message){
+    public ChatMessage addChatMessage(Long userIdx, ChatMessageRequestDto message){
         ChatMessage chatMessage = ChatMessage.builder()
                 .type(message.getType())
-                .revIdx(1L)
-                .sendIdx(2L)
+                .sendIdx(userIdx)
                 .chatRoom(message.getChatRoom())
                 .message(message.getMessage())
                 .build();
