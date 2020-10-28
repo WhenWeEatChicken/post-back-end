@@ -18,9 +18,6 @@ public class CommentRequestDto {
     private Post post;
 
     @NotNull
-    private Long userIdx;
-
-    @NotNull
     private Long commentIdx;
 
     @NotNull

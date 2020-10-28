@@ -110,8 +110,10 @@ public class PostController {
             @RequestBody PostRequestDto resource
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userIdx = claims.get("userId", Long.class);
 
-        postService.updatePost(idx, resource);
+        postService.updatePost(idx, userIdx, resource);
         return "{}";
     }
 

@@ -64,14 +64,16 @@ public class PostService {
     }
 
     @Transactional
-    public Post updatePost(Long idx, PostRequestDto requestDto) {
+    public Post updatePost(Long idx, Long userIdx, PostRequestDto requestDto) {
         Post post = postRepository.findByIdx(idx)
                 .orElseThrow(() -> new PostNotFoundException(idx));
-        String title = requestDto.getTitle();
-        String contents = requestDto.getContents();
-        PostStatus status = requestDto.getStatus();
+        if(post.getUser().getIdx().equals(userIdx)){
+            String title = requestDto.getTitle();
+            String contents = requestDto.getContents();
+            PostStatus status = requestDto.getStatus();
 
-        post.updatePost(title, contents, status);
+            post.updatePost(title, contents, status);
+        }
         return post;
     }
 }

@@ -132,7 +132,7 @@ class PostServiceTests {
                 .status(PostStatus.Y)
                 .build();
 
-        postService.updatePost(1L, postRequestDto);
+        postService.updatePost(1L,1L, postRequestDto);
 
         assertThat(post.getTitle()).isEqualTo("BeRyong");
         assertThat(post.getContents()).isEqualTo("Busan");

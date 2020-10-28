@@ -105,7 +105,7 @@ public class PostControllerTests {
 
     @Test
     public void create() throws Exception {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjYsIm5hbWUiOiJzdHJpbmciLCJpYXQiOjE2MDM3MjY2NjAsImV4cCI6MTYwMzczMzg2MH0._omnEFt7ZZDRqnQBxk-eXdCp9MMxNuzrBIiFW_Z3HPs";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjYsIm5hbWUiOiJzdHJpbmciLCJpYXQiOjE2MDM4NjU3NzQsImV4cCI6MTYwMzg3Mjk3NH0.MT22kid_83uH4gGgkVmYRX7yekhcp4kWip-Tv8wN_ng";
 
         given(postService.addPost(any(), any(), any(), any(), any())).willReturn(
                 Post.builder()
@@ -157,26 +157,17 @@ public class PostControllerTests {
 
     @Test
     public void update() throws Exception {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjYsIm5hbWUiOiJzdHJpbmciLCJpYXQiOjE2MDM3MjY2NjAsImV4cCI6MTYwMzczMzg2MH0._omnEFt7ZZDRqnQBxk-eXdCp9MMxNuzrBIiFW_Z3HPs";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjYsIm5hbWUiOiJzdHJpbmciLCJpYXQiOjE2MDM4NjU3NzQsImV4cCI6MTYwMzg3Mjk3NH0.MT22kid_83uH4gGgkVmYRX7yekhcp4kWip-Tv8wN_ng";
 
-        given(postService.updatePost(eq(1L), any())).willReturn(
-                Post.builder()
-                        .idx(3L)
-                        .user(User.builder().idx(3L).build())
-                        .title("JOKER")
-                        .contents("Seoul")
-                        .status(PostStatus.Y)
-                        .build()
-        );
         mvc.perform(patch("/posts/1")
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"userIdx\":1,\"title\":\"JOKER Bar\"," +
+                .content("{\"title\":\"JOKER Bar\"," +
                         "\"contents\":\"Busan\",\"status\":\"Y\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("{}"));
 
         verify(postService)
-                .updatePost(eq(1L), any());
+                .updatePost(eq(1L),eq(6L), any());
     }
 }

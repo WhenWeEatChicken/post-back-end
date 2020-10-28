@@ -1,8 +1,6 @@
 package com.post.www.application;
 
-import com.post.www.domain.Comment;
-import com.post.www.domain.CommentRepository;
-import com.post.www.domain.Post;
+import com.post.www.domain.*;
 import com.post.www.interfaces.dto.CommentRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,6 +25,8 @@ class CommentServiceTests {
 
     @Mock
     private CommentRepository commentRepository;
+    @Mock
+    private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
@@ -58,13 +59,18 @@ class CommentServiceTests {
 
     @Test
     void addComment(){
+        User user = User.builder()
+                .idx(1L)
+                .build();
+        given(userRepository.findByIdx(any())).willReturn(Optional.of(user));
+
         given(commentRepository.save(any())).will(invocation -> {
             Comment comment = invocation.getArgument(0);
             return comment;
         });
         Post post = Post.builder()
                 .idx(1L)
-                .user(any())
+                .user(user)
                 .title("Seoul")
                 .contents("Bob zip")
                 .build();
@@ -73,8 +79,27 @@ class CommentServiceTests {
                 .contents("Busan")
                 .commentIdx(0L)
                 .build();
-        Comment created = commentService.addComment(requestDto);
+        Comment created = commentService.addComment(1L, requestDto);
         assertThat(created.getContents()).isEqualTo("Busan");
+    }
+
+    @Test
+    public void updateComment() {
+        Comment comment = Comment.builder()
+                .idx(1L)
+                .user(User.builder().idx(1L).build())
+                .contents("Seoul")
+                .build();
+
+        given(commentRepository.findByIdx(1L))
+                .willReturn(Optional.of(comment));
+        CommentRequestDto commentRequestDto = CommentRequestDto.builder()
+                .contents("Busan")
+                .build();
+
+        commentService.updateComment(1L,1L, commentRequestDto);
+
+        assertThat(comment.getContents()).isEqualTo("Busan");
     }
 
 }

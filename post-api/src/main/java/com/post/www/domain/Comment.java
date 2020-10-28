@@ -17,13 +17,15 @@ public class Comment extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "post_idx" , referencedColumnName = "idx")
     private Post post;
 
     @NotNull
-    @Column(name="user_idx")
-    private Long userIdx;
+    @ManyToOne
+    @JoinColumn(name="user_idx", referencedColumnName = "idx")
+    private User user;
 
     @NotNull
     @Column(name="comment_idx")
@@ -36,4 +38,7 @@ public class Comment extends BaseTimeEntity{
     @Column(name="is_del")
     private String isDel;
 
+    public void updateComment(@NotNull String contents) {
+        this.contents = contents;
+    }
 }
