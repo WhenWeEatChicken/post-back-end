@@ -41,7 +41,7 @@ class CommentControllerTests {
         mvc.perform(post("/comment")
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"post\":{\"postIdx\":1},\"contents\":\"BBBB\",\"commentIdx\":\"0\",\"userIdx\":\"0\"}")
+                .content("{\"postIdx\":1,\"contents\":\"BBBB\",\"commentIdx\":\"0\",\"userIdx\":\"0\"}")
         )
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/comment/3"))
