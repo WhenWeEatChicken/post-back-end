@@ -1,5 +1,6 @@
 package com.post.www.interfaces.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.post.www.domain.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import javax.validation.constraints.NotNull;
 public class CommentRequestDto {
 
     @NotNull
-    private Post post;
+    private Long postIdx;
 
     @NotNull
     private Long commentIdx;

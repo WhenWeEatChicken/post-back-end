@@ -1,6 +1,7 @@
 package com.post.www.application;
 
 import com.post.www.application.exception.CommentNotFoundException;
+import com.post.www.application.exception.PostNotFoundException;
 import com.post.www.application.exception.UserNotExistedException;
 import com.post.www.domain.*;
 import com.post.www.interfaces.dto.CommentRequestDto;
@@ -17,6 +18,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
     public List<Comment> getComments(Post post) {
         return commentRepository.findAllByPost(post);
@@ -25,8 +27,10 @@ public class CommentService {
     public Comment addComment(Long userIdx, CommentRequestDto requestDto) {
         User user = userRepository.findByIdx(userIdx)
                 .orElseThrow(() -> new UserNotExistedException(userIdx));
+        Post post = postRepository.findByIdx(requestDto.getPostIdx())
+                .orElseThrow(() -> new PostNotFoundException(requestDto.getPostIdx()));
         Comment comment = Comment.builder()
-                .post(requestDto.getPost())
+                .post(post)
                 .contents(requestDto.getContents())
                 .commentIdx(requestDto.getCommentIdx())
                 .user(user)

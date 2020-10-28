@@ -27,6 +27,8 @@ class CommentServiceTests {
     private CommentRepository commentRepository;
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private PostRepository postRepository;
 
     @BeforeEach
     void setUp() {
@@ -74,8 +76,9 @@ class CommentServiceTests {
                 .title("Seoul")
                 .contents("Bob zip")
                 .build();
+        given(postRepository.findByIdx(any())).willReturn(Optional.of(post));
         CommentRequestDto requestDto = CommentRequestDto.builder()
-                .post(post)
+                .postIdx(post.getIdx())
                 .contents("Busan")
                 .commentIdx(0L)
                 .build();
