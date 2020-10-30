@@ -32,10 +32,10 @@ public class ChatController {
     }
 
     private void addChatMessage(ChatMessageRequestDto message) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        Claims claims = (Claims) authentication.getPrincipal();
-        Long userIdx = claims.get("userId", Long.class);
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        Claims claims = (Claims) authentication.getPrincipal();
+        Long userIdx = 6L;
         chatMessageService.addChatMessage(userIdx, message);
     }
 }
