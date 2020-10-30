@@ -15,13 +15,12 @@ public class ChatMessageRequestDto {
 
     @NotNull
     private MessageType type;
-    @NotNull
-    private ChatRoom chatRoom;
+
+    private Long chatRoomIdx;
+
     @NotNull
     private String roomId;
-    @NotNull
-    private String sender;
-    @NotNull
+
     private String message;
 
     public void updateMessage(String message){

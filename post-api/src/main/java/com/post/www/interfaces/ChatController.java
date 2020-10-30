@@ -25,7 +25,7 @@ public class ChatController {
     @MessageMapping("/chat/message")
     public void message(ChatMessageRequestDto message) {
         if (MessageType.ENTER.equals(message.getType())) {
-            message.updateMessage(message.getSender() + "님이 입장하셨습니다.");
+//            message.updateMessage(message.getSender() + "님이 입장하셨습니다.");
         }
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
         addChatMessage(message);
