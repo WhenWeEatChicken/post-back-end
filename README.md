@@ -12,8 +12,11 @@
 채팅 기능은 spring websocket을 이용해 STOMP 방식으로 메시지를 전달합니다
 
 서버 : MS Azure 인스턴스
+
 DB : MS Azure rds (MySQL)
+
 프레임워크 : Spring Boot
+
 사용 언어 : Java
 
 
