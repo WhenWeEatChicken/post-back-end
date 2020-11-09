@@ -1,6 +1,6 @@
 package com.post.www.interfaces;
 
-import com.post.www.application.FileService;
+import com.post.www.application.PostFileService;
 import com.post.www.application.PostService;
 import com.post.www.config.enums.PostStatus;
 import com.post.www.config.enums.PostType;
@@ -42,7 +42,7 @@ import java.util.UUID;
 public class PostController {
 
     private final PostService postService;
-    private final FileService fileService;
+    private final PostFileService postFileService;
 
     @Value("${temp.path}")
     private String tempPath;
@@ -89,7 +89,7 @@ public class PostController {
                 filePath = tempPath + localDate + UUID.randomUUID().toString().replace("-", "");
                 fileName = requestDto.getFile().getOriginalFilename();
                 requestDto.getFile().transferTo(new File(filePath));
-                fileService.addFile(post, "post", filePath, fileName);
+                postFileService.addFile(post, "post", filePath, fileName);
             }
         } catch (IOException e) {
             throw e;
@@ -117,5 +117,9 @@ public class PostController {
         return "{}";
     }
 
+    public String delete(){
+        //TODO : 게시글 삭제 로직 구현 (삭제시 묶여있는 댓글과 파일또한 삭제)
+        return null;
+    }
 
 }

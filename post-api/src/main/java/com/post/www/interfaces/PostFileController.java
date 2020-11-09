@@ -1,6 +1,6 @@
 package com.post.www.interfaces;
 
-import com.post.www.application.FileService;
+import com.post.www.application.PostFileService;
 import com.post.www.interfaces.dto.FileResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,16 +21,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Api(tags = {"6.FileController"})
+@Api(tags = {"6.PostFileController"})
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-public class FileController {
+public class PostFileController {
 
     @Value("${temp.path}")
     private String tempPath;
 
-    private final FileService fileService;
+    private final PostFileService postFileService;
 
     /*@PostMapping("/upload")
     public ResponseEntity<?> upload(
@@ -39,7 +39,7 @@ public class FileController {
         LocalDate localDate = LocalDate.now();
         String filePath = tempPath + localDate + UUID.randomUUID().toString().replace("-", "");
         try {
-            file.transferTo(new File(filePath));
+            file.transferTo(new PostFile(filePath));
         } catch (IOException e) {
             log.error("Error file upload.", e);
             throw e;
@@ -51,7 +51,7 @@ public class FileController {
     @ApiOperation(value = "파일 다운로드", notes = "파일 다운로드시 사용.")
     @GetMapping("/download/{fileId}")
     public ResponseEntity<Resource> download(@PathVariable("fileId") Long fileId) throws IOException {
-        FileResponseDto file = fileService.getFile(fileId);
+        FileResponseDto file = postFileService.getFile(fileId);
         Path path = Paths.get(file.getFilePath());
         Resource resource = new InputStreamResource(Files.newInputStream(path));
         return ResponseEntity.ok()

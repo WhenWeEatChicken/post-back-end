@@ -1,6 +1,6 @@
 package com.post.www.interfaces;
 
-import com.post.www.application.FileService;
+import com.post.www.application.PostFileService;
 import com.post.www.application.PostService;
 import com.post.www.config.enums.PostStatus;
 import com.post.www.config.enums.PostType;
@@ -43,7 +43,7 @@ public class PostControllerTests {
     @MockBean
     private PostService postService;
     @MockBean
-    private FileService fileService;
+    private PostFileService postFileService;
 
     @Test
     public void list() throws Exception {
@@ -138,7 +138,7 @@ public class PostControllerTests {
                 .andExpect(content().string("{}"));
 
         verify(postService).addPost(any(), any(), any(), any(), any());
-        verify(fileService).addFile(any(), any(), any(), any());
+        verify(postFileService).addFile(any(), any(), any(), any());
     }
 
     @Test

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @Api(tags = {"2.CommentController"})
 @RequiredArgsConstructor
@@ -24,6 +25,13 @@ import java.net.URISyntaxException;
 public class CommentController {
 
     private final CommentService commentService;
+
+    @GetMapping("/comment/{postIdx}")
+    public List<Comment> list(@PathVariable("postIdx") Long postIdx){
+        //TODO: 게시판별로 댓글 조회 구현
+
+        return null;
+    }
 
     @ApiOperation(value = "댓글 등록", notes = "새로운 댓글을 등록합니다.")
     @ApiImplicitParams(

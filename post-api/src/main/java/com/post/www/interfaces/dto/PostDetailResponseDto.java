@@ -1,7 +1,6 @@
 package com.post.www.interfaces.dto;
 
 import com.post.www.config.enums.PostStatus;
-import com.post.www.domain.File;
 import com.post.www.domain.Post;
 import lombok.Builder;
 import lombok.Getter;

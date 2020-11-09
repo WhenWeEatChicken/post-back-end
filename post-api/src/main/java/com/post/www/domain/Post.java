@@ -48,7 +48,7 @@ public class Post extends BaseTimeEntity {
     private List<Comment> comments;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
-    private List<File> files;
+    private List<PostFile> files;
 
     public void updatePost(@NotEmpty String title, @NotEmpty String contents, @NotNull PostStatus status) {
         this.title = title;
