@@ -4,6 +4,7 @@ import com.post.www.application.exception.EmailExistedException;
 import com.post.www.application.exception.EmailNotExistedException;
 import com.post.www.application.exception.PasswordWrongException;
 import com.post.www.application.exception.UserNotExistedException;
+import com.post.www.config.enums.UserType;
 import com.post.www.domain.User;
 import com.post.www.domain.UserRepository;
 import com.post.www.interfaces.dto.UserAddRequestDto;
@@ -32,13 +33,10 @@ public class UserService {
 
         String encodePassword = passwordEncoder.encode(requestDto.getPassword());
         User user = User.builder()
-                .type(requestDto.getType())
+                .type(UserType.CUSTORMER) // 회원가입은 고객
                 .nickname(requestDto.getNickname())
-                .name(requestDto.getName())
                 .password(encodePassword)
                 .email(requestDto.getEmail())
-                .comments(requestDto.getComments())
-                .contents(requestDto.getContents())
                 .build();
 
         return userRepostory.save(user);

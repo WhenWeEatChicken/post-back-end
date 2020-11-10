@@ -46,11 +46,11 @@ class UserServiceTests {
         UserAddRequestDto requestDto = UserAddRequestDto.builder()
                 .nickname("dlh1106")
                 .type(UserType.CUSTORMER)
-                .name("도훈")
+//                .name("도훈")
                 .password("pass")
                 .email("dlh1106@naver.com")
-                .comments("")
-                .contents("")
+//                .comments("")
+//                .contents("")
                 .build();
         userService.addUser(requestDto);
         verify(userRepository).save(any());
@@ -62,11 +62,11 @@ class UserServiceTests {
         UserAddRequestDto requestDto = UserAddRequestDto.builder()
                 .nickname("dlh1106")
                 .type(UserType.CUSTORMER)
-                .name("도훈")
+//                .name("도훈")
                 .password("pass")
                 .email("dlh1106@naver.com")
-                .comments("")
-                .contents("")
+//                .comments("")
+//                .contents("")
                 .build();
 
         User user = User.builder()

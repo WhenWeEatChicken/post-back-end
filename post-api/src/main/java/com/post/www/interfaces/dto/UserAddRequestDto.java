@@ -15,30 +15,16 @@ public class UserAddRequestDto {
     @NotEmpty
     private String nickname;
 
-    @NotNull
-    private UserType type;
-
-    @NotEmpty
-    private String name;
-
     @NotEmpty
     private String email;
 
     @NotEmpty
     private String password;
 
-    private String comments;
-
-    private String contents;
-
     @Builder
     public UserAddRequestDto(@NotEmpty String nickname, @NotEmpty UserType type, @NotEmpty String name, @NotEmpty String email, @NotEmpty String password, String comments, String contents) {
         this.nickname = nickname;
-        this.type = type;
-        this.name = name;
         this.email = email;
         this.password = password;
-        this.comments = comments;
-        this.contents = contents;
     }
 }
